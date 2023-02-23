@@ -500,7 +500,8 @@ class TextChannel(abc.Messageable, abc.GuildChannel, Hashable, PinsMixin):
         """
 
         if check is MISSING:
-            def check(m):
+
+            def check(m) -> bool:
                 return True
 
         iterator = self.history(
@@ -1915,7 +1916,8 @@ class VoiceChannel(VocalGuildChannel, abc.Messageable):
         """
 
         if check is MISSING:
-            def check(m):
+
+            def check(m) -> bool:
                 return True
 
         iterator = self.history(

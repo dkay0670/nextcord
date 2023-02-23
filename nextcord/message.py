@@ -871,6 +871,7 @@ class Message(Hashable):
     def _add_reaction(self, data, emoji: Emoji | PartialEmoji | str, user_id) -> Reaction:
         def finder(r):
             return r.emoji == emoji
+
         reaction = utils.find(finder, self.reactions)
         is_me = data["me"] = user_id == self._state.self_id
 

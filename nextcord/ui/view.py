@@ -78,6 +78,7 @@ class _ViewWeights:
 
         def key(i):
             return sys.maxsize if i.row is None else i.row
+
         children = sorted(children, key=key)
         for _, group in groupby(children, key=key):
             for item in group:

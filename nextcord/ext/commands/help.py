@@ -548,10 +548,11 @@ class HelpCommand:
         """
 
         if sort and key is None:
+
             def key(c):
                 return c.name
 
-        def _filter(c):
+        def _filter(c) -> bool:
             return not c.hidden
 
         iterator = commands if self.show_hidden else filter(_filter, commands)

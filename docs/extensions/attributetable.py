@@ -3,7 +3,7 @@ import importlib
 import inspect
 import re
 from collections import OrderedDict
-from typing import Callable, NamedTuple, Optional
+from typing import NamedTuple, Optional
 
 from docutils import nodes
 from sphinx import addnodes
@@ -196,6 +196,7 @@ def process_attributetable(app, doctree, fromdocname):
 
             def key(c):
                 return c.label
+
             table.append(class_results_to_node(label, sorted(subitems, key=key)))
 
         table["python-class"] = fullname

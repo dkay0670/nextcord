@@ -515,7 +515,8 @@ class Thread(Messageable, Hashable, PinsMixin):
         """
 
         if check is MISSING:
-            def check(m):
+
+            def check(m) -> bool:
                 return True
 
         iterator = self.history(

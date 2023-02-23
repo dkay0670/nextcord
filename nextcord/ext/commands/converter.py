@@ -26,11 +26,9 @@ import nextcord
 from .errors import *
 
 if TYPE_CHECKING:
-    from typing import Callable
+    pass
 
-    from nextcord.member import Member
     from nextcord.message import PartialMessageableChannel
-    from nextcord.user import User
 
     from .context import Context
 
@@ -184,8 +182,10 @@ class MemberConverter(IDConverter[nextcord.Member]):
             return nextcord.utils.get(members, name=username, discriminator=discriminator)
         else:
             members = await guild.query_members(argument, limit=100, cache=cache)
+
             def finder(m):
                 return m.name == argument or m.nick == argument
+
             return nextcord.utils.find(finder, members)
 
     async def query_member_by_id(self, bot, guild, user_id):
@@ -296,14 +296,17 @@ class UserConverter(IDConverter[nextcord.User]):
         if len(arg) > 5 and arg[-5] == "#":
             discrim = arg[-4:]
             name = arg[:-5]
+
             def predicate(u):
                 return u.name == name and u.discriminator == discrim
+
             result = nextcord.utils.find(predicate, state._users.values())
             if result is not None:
                 return result
 
         def predicate(u):
             return u.name == arg
+
         result = nextcord.utils.find(predicate, state._users.values())
 
         if result is None:
