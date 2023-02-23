@@ -502,11 +502,14 @@ class GuildChannel:
         predicate: Callable[[_Overwrites], bool]
 
         if isinstance(obj, User):
-            predicate = lambda p: p.is_member()
+            def predicate(p):
+                return p.is_member()
         elif isinstance(obj, Role):
-            predicate = lambda p: p.is_role()
+            def predicate(p):
+                return p.is_role()
         else:
-            predicate = lambda p: True
+            def predicate(p):
+                return True
 
         for overwrite in filter(predicate, self._overwrites):
             if overwrite.id == obj.id:

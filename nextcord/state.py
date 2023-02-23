@@ -2397,7 +2397,8 @@ class AutoShardedConnectionState(ConnectionState):
                 processed.append((guild, future))
 
         processed: list[tuple[Guild, Future]]
-        key: Callable[[tuple[Guild, Future[list[Member]]]], int] = lambda g: g[0].shard_id
+        def key(g):
+            return g[0].shard_id
         guilds = sorted(processed, key=key)
         for shard_id, info in itertools.groupby(guilds, key=key):
             children: Tuple[Guild]

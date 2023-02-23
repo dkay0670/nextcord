@@ -539,7 +539,8 @@ class Intents(BaseFlags):
     def all(cls) -> Self:
         """A factory method that creates a :class:`Intents` with everything enabled."""
         self = cls.__new__(cls)
-        add_bits: Callable[[int, int], int] = lambda a, b: a | b
+        def add_bits(a, b):
+            return a | b
         self.value = reduce(add_bits, cls.VALID_FLAGS.values())
         return self
 

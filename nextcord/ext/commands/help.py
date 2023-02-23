@@ -548,9 +548,11 @@ class HelpCommand:
         """
 
         if sort and key is None:
-            key = lambda c: c.name
+            def key(c):
+                return c.name
 
-        _filter: Callable[[Command[Any, Any, Any]], bool] = lambda c: not c.hidden
+        def _filter(c):
+            return not c.hidden
 
         iterator = commands if self.show_hidden else filter(_filter, commands)
 

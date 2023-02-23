@@ -3825,9 +3825,8 @@ class Guild(Hashable):
         List[Union[:class:`Member`, :class:`User`]]
             List of :class:`Member` or :class:`User` objects that were mentioned in the string.
         """
-        get_member_or_user: Callable[
-            [int], Optional[Union[Member, User]]
-        ] = lambda id: self.get_member(id) or self._state.get_user(id)
+        def get_member_or_user(id):
+            return self.get_member(id) or self._state.get_user(id)
         it = filter(None, map(get_member_or_user, utils.parse_raw_mentions(text)))
         return utils.unique(it)
 

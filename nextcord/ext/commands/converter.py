@@ -184,7 +184,8 @@ class MemberConverter(IDConverter[nextcord.Member]):
             return nextcord.utils.get(members, name=username, discriminator=discriminator)
         else:
             members = await guild.query_members(argument, limit=100, cache=cache)
-            finder: Callable[[Member], bool] = lambda m: m.name == argument or m.nick == argument
+            def finder(m):
+                return m.name == argument or m.nick == argument
             return nextcord.utils.find(finder, members)
 
     async def query_member_by_id(self, bot, guild, user_id):
@@ -295,14 +296,14 @@ class UserConverter(IDConverter[nextcord.User]):
         if len(arg) > 5 and arg[-5] == "#":
             discrim = arg[-4:]
             name = arg[:-5]
-            predicate: Callable[[User], bool] = (
-                lambda u: u.name == name and u.discriminator == discrim
-            )
+            def predicate(u):
+                return u.name == name and u.discriminator == discrim
             result = nextcord.utils.find(predicate, state._users.values())
             if result is not None:
                 return result
 
-        predicate = lambda u: u.name == arg
+        def predicate(u):
+            return u.name == arg
         result = nextcord.utils.find(predicate, state._users.values())
 
         if result is None:

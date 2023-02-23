@@ -194,7 +194,8 @@ def process_attributetable(app, doctree, fromdocname):
             if not subitems:
                 continue
 
-            key: Callable[[TableElement], str] = lambda c: c.label
+            def key(c):
+                return c.label
             table.append(class_results_to_node(label, sorted(subitems, key=key)))
 
         table["python-class"] = fullname
