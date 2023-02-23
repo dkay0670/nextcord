@@ -88,4 +88,4 @@ jobs:
 
       - name: Run ruff
         # 0.0.252
-        uses: jpetrucciani/ruff-check@d064acf
+        uses: jpetrucciani/ruff-check@d064acf63d9bc07445fc6f027d89303d074f7546
