@@ -72,3 +72,11 @@ repos:
           - autotyping==22.9.0
           - black==22.12.0
           - libcst==0.4.9
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.252
+    hooks:
+      - id: ruff
+        # Non-zero means user can check changes before committing.
+        args: [--fix, --exit-non-zero-on-fix]
+        name: Linting all files with ruff.
