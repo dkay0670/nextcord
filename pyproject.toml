@@ -21,6 +21,7 @@ precommit = { cmd = "pre-commit install --install-hooks", help = "Install the pr
 pyright = { cmd = "dotenv -f task.env run -- python -m pyright", help = "Run pyright" }
 slotscheck = { cmd = "python -m slotscheck --verbose -m nextcord", help = "Run slotscheck" }
 autotyping = { cmd = "task lint autotyping", help = "Refactor code to add automatic type annotations" }
+ruff = { cmd = "task lint ruff", help = "Run ruff" }
 
 
 [tool.slotscheck]
@@ -59,3 +60,11 @@ reportUnsupportedDunderAll = true
 reportUnusedVariable = true
 reportUnnecessaryComparison = true
 reportUnnecessaryTypeIgnoreComment = true
+
+
+# https://beta.ruff.rs/docs/configuration/
+[tool.ruff]
+line-length = 100
+
+# https://beta.ruff.rs/docs/rules/
+select = ["E"]
