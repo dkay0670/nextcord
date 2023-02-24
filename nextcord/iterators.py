@@ -40,7 +40,6 @@ __all__ = (
 
 if TYPE_CHECKING:
     from .abc import Messageable, Snowflake, SnowflakeTime
-    from .audit_logs import AuditLogEntry
     from .client import Client
     from .enums import AuditLogAction
     from .guild import Guild
