@@ -7,20 +7,6 @@ ci:
     ci(pre-commit): autoupdate hook versions
 
 repos:
-  - repo: https://github.com/PyCQA/autoflake
-    rev: v2.0.1
-    hooks:
-      - id: autoflake
-        name: Remove unused imports with autoflake.
-        args:
-          [
-            "--in-place",
-            "--remove-all-unused-imports",
-            "--ignore-init-module-imports",
-            "--ignore-pass-after-docstring",
-            "--exclude=discord/**",
-          ]
-
   - repo: https://github.com/psf/black
     rev: 23.1.0
     hooks:
