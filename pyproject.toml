@@ -4,18 +4,9 @@ line-length = 100
 target-version = ["py38", "py39", "py310", "py311"]
 
 
-[tool.isort]
-profile = "black"
-py_version = 38
-line_length = 100
-combine_as_imports = true
-filter_files = true
-
-
 [tool.taskipy.tasks]
 black = { cmd = "task lint black", help = "Run black" }
 docs = { cmd = "cd docs && sphinx-autobuild . _build/html --ignore _build --watch ../nextcord --port 8069", help = "Build the documentation on an autoreloading server." }
-isort = { cmd = "task lint isort", help = "Run isort" }
 lint = { cmd = "pre-commit run --all-files", help = "Check all files for linting errors" }
 precommit = { cmd = "pre-commit install --install-hooks", help = "Install the precommit hook" }
 pyright = { cmd = "dotenv -f task.env run -- python -m pyright", help = "Run pyright" }
@@ -67,7 +58,7 @@ reportUnnecessaryTypeIgnoreComment = true
 line-length = 100
 
 # https://beta.ruff.rs/docs/rules/
-select = ["E", "F", "W"]
+select = ["E", "F", "W", "I"]
 
 # F403, F405: star imports are not lethal. Pyright can find undefined errors.
 ignore = ["F403", "F405"]
@@ -75,3 +66,6 @@ ignore = ["F403", "F405"]
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]
 "discord/*" = ["F401"]
+
+[tool.ruff.isort]
+combine-as-imports = true

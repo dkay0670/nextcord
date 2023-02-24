@@ -6,6 +6,7 @@ import os
 
 # There are other ways to load environment variables but this is one
 from dotenv import load_dotenv  # https://pypi.org/project/python-dotenv/
+
 from nextcord.ext import commands
 
 # load_dotenv reads from a file called .env in the same directory as the python files
