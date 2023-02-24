@@ -237,10 +237,11 @@ class PrivilegedIntentsRequired(ClientException):
     def __init__(self, shard_id: Optional[int]) -> None:
         self.shard_id: Optional[int] = shard_id
         msg = (
-            "Shard ID %s is requesting privileged intents that have not been explicitly enabled in the "
-            "developer portal. It is recommended to go to https://discord.com/developers/applications/ "
-            "and explicitly enable the privileged intents within your application's page. If this is not "
-            "possible, then consider disabling the privileged intents instead."
+            "Shard ID %s is requesting privileged intents that have not been "
+            "explicitly enabled in the developer portal. It is recommended to go to "
+            "https://discord.com/developers/applications/ and explicitly enable the "
+            "privileged intents within your application's page. If this is not possible, "
+            "then consider disabling the privileged intents instead."
         )
         super().__init__(msg % shard_id)
 
@@ -311,6 +312,4 @@ class ApplicationCheckFailure(ApplicationError):
 
 
 class ApplicationCommandOptionMissing(ApplicationError):
-    """Raised when an option that's supposed to be part of an application command is missing on our end."""
-
-    pass
+    """Raised when an option that's supposed to be part of an application command is missing on our end."""  # noqa: E501

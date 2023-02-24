@@ -511,7 +511,10 @@ class ViewStore:
         view._start_listening_from_store(self)
         for item in view.children:
             if item.is_dispatchable():
-                self._views[(item.type.value, message_id, item.custom_id)] = (view, item)  # type: ignore
+                self._views[(item.type.value, message_id, item.custom_id)] = (  # type: ignore
+                    view,
+                    item,
+                )
 
         if message_id is not None:
             self._synced_message_views[message_id] = view

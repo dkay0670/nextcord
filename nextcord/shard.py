@@ -262,7 +262,7 @@ class ShardInfo:
 
     @property
     def latency(self) -> float:
-        """:class:`float`: Measures latency between a HEARTBEAT and a HEARTBEAT_ACK in seconds for this shard."""
+        """:class:`float`: Measures latency between a HEARTBEAT and a HEARTBEAT_ACK in seconds for this shard."""  # noqa: E501
         return self._parent.ws.latency
 
     def is_ws_ratelimited(self) -> bool:
@@ -436,11 +436,11 @@ class AutoShardedClient(Client):
         """List[Tuple[:class:`int`, :class:`float`]]: A list of latencies between a HEARTBEAT and a HEARTBEAT_ACK in seconds.
 
         This returns a list of tuples with elements ``(shard_id, latency)``.
-        """
+        """  # noqa: E501
         return [(shard_id, shard.ws.latency) for shard_id, shard in self.__shards.items()]
 
     def get_shard(self, shard_id: int) -> Optional[ShardInfo]:
-        """Optional[:class:`ShardInfo`]: Gets the shard information at a given shard ID or ``None`` if not found."""
+        """Optional[:class:`ShardInfo`]: Gets the shard information at a given shard ID or ``None`` if not found."""  # noqa: E501
         try:
             parent = self.__shards[shard_id]
         except KeyError:
@@ -450,7 +450,7 @@ class AutoShardedClient(Client):
 
     @property
     def shards(self) -> Dict[int, ShardInfo]:
-        """Mapping[int, :class:`ShardInfo`]: Returns a mapping of shard IDs to their respective info object."""
+        """Mapping[int, :class:`ShardInfo`]: Returns a mapping of shard IDs to their respective info object."""  # noqa: E501
         return {
             shard_id: ShardInfo(parent, self.shard_count)
             for shard_id, parent in self.__shards.items()
@@ -600,7 +600,8 @@ class AutoShardedClient(Client):
             if me is None:
                 continue
 
-            # Member.activities is typehinted as Tuple[ActivityType, ...], we may be setting it as Tuple[BaseActivity, ...]
+            # Member.activities is typehinted as Tuple[ActivityType, ...],
+            # we may be setting it as Tuple[BaseActivity, ...]
             me.activities = activities  # type: ignore
             me.status = status_enum
 

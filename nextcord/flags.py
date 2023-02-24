@@ -195,29 +195,29 @@ class SystemChannelFlags(BaseFlags):
 
     @flag_value
     def join_notifications(self) -> int:
-        """:class:`bool`: Returns ``True`` if the system channel is used for member join notifications."""
-        return 1
+        """:class:`bool`: Returns ``True`` if the system channel is used for member join notifications."""  # noqa: E501
+        return 1 << 0
 
     @flag_value
     def premium_subscriptions(self) -> int:
-        """:class:`bool`: Returns ``True`` if the system channel is used for "Nitro boosting" notifications."""
-        return 2
+        """:class:`bool`: Returns ``True`` if the system channel is used for "Nitro boosting" notifications."""  # noqa: E501
+        return 1 << 1
 
     @flag_value
     def guild_reminder_notifications(self) -> int:
         """:class:`bool`: Returns ``True`` if the system channel is used for server setup helpful tips notifications.
 
         .. versionadded:: 2.0
-        """
-        return 4
+        """  # noqa: E501
+        return 1 << 2
 
     @flag_value
     def join_notification_replies(self) -> int:
         """:class:`bool`: Returns ``True`` if the button to reply with a sticker to member join notifications is shown.
 
         .. versionadded:: 2.0
-        """
-        return 8
+        """  # noqa: E501
+        return 1 << 3
 
 
 @fill_with_flags()
@@ -321,7 +321,7 @@ class MessageFlags(BaseFlags):
 
     @flag_value
     def source_message_deleted(self) -> int:
-        """:class:`bool`: Returns ``True`` if the source message for this crosspost has been deleted."""
+        """:class:`bool`: Returns ``True`` if the source message for this crosspost has been deleted."""  # noqa: E501
         return 8
 
     @flag_value
@@ -429,7 +429,7 @@ class PublicUserFlags(BaseFlags):
 
     @flag_value
     def system(self):
-        """:class:`bool`: Returns ``True`` if the user is a system user (i.e. represents Discord officially)."""
+        """:class:`bool`: Returns ``True`` if the user is a system user (i.e. represents Discord officially)."""  # noqa: E501
         return UserFlags.system.value
 
     @flag_value
@@ -968,12 +968,14 @@ class Intents(BaseFlags):
         - Messages the bot receives in DMs
         - Messages in which the bot is mentioned
 
-        For more information go to the :ref:`message content intent documentation <need_message_content_intent>`.
+        For more information go to the
+        :ref:`message content intent documentation <need_message_content_intent>`.
 
         .. note::
 
-            As of September 1, 2022, this requires opting in explicitly via the developer portal as well.
-            Bots in over 100 guilds will need to apply to Discord for verification.
+            As of September 1, 2022, this requires opting in explicitly via
+            the developer portal as well. Bots in over 100 guilds will need to apply
+            to Discord for verification.
         """
         return 1 << 15
 
@@ -1233,7 +1235,7 @@ class ApplicationFlags(BaseFlags):
 
     @flag_value
     def embedded(self):
-        """:class:`bool`: Returns ``True`` if the application is embedded within the Discord client."""
+        """:class:`bool`: Returns ``True`` if the application is embedded within the Discord client."""  # noqa: E501
         return 1 << 17
 
     @flag_value
@@ -1252,12 +1254,14 @@ class ApplicationFlags(BaseFlags):
 
     @flag_value
     def application_command_badge(self):
-        """:class:`bool`: Returns ``True`` if the application has registered global application commands."""
+        """:class:`bool`: Returns ``True`` if the application has registered global application commands."""  # noqa: E501
         return 1 << 23
 
     @flag_value
     def active(self):
-        """:class:`bool`: Returns ``True`` if the application is considered active. This means that it has had any global command executed in the past 30 days.
+        """:class:`bool`: Returns ``True`` if the application is considered active.
+
+        This means that it has had any global command executed in the past 30 days.
 
         .. versionadded:: 2.4
         """

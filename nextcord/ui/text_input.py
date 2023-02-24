@@ -112,7 +112,7 @@ class TextInput(Item[V]):
 
     @property
     def custom_id(self) -> Optional[str]:
-        """Optional[:class:`str`]: The ID of the text input that gets received during an interaction."""
+        """Optional[:class:`str`]: The custom ID of this text input."""
         return self._underlying.custom_id
 
     @custom_id.setter
@@ -165,7 +165,7 @@ class TextInput(Item[V]):
 
     @property
     def default_value(self) -> Optional[str]:
-        """Optional[:class:`str`]: The value already in the text input when the user open the form."""
+        """Optional[:class:`str`]: The value already in the text input."""
         return self._underlying.value
 
     @default_value.setter

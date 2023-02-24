@@ -63,7 +63,10 @@ ClientT = TypeVar("ClientT", bound="Client")
 class InteractionAttached(dict):
     """Represents the attached data of an interaction.
 
-    This is used to store information about an :class:`Interaction`. This is useful if you want to save some data from a :meth:`ApplicationCommand.application_command_before_invoke` to use later in the callback.
+    This is used to store information about an :class:`Interaction`.
+    This is useful if you want to save some data from a
+    :meth:`ApplicationCommand.application_command_before_invoke` to use later
+    in the callback.
 
     Example
     -------
@@ -143,7 +146,9 @@ class Interaction(Hashable, Generic[ClientT]):
     data: :class:`dict`
         The raw interaction data.
     attached: :class:`InteractionAttached`
-        The attached data of the interaction. This is used to store any data you may need inside the interaction for convenience. This data will stay on the interaction, even after a :meth:`Interaction.application_command_before_invoke`.
+        The attached data of the interaction. This is used to store any data you may need
+        inside the interaction for convenience. This data will stay on the interaction,
+        even after a :meth:`Interaction.application_command_before_invoke`.
     application_command: Optional[:class:`ApplicationCommand`]
         The application command that handled the interaction.
     """
@@ -217,8 +222,15 @@ class Interaction(Hashable, Generic[ClientT]):
             except KeyError:
                 pass
             else:
-                cached_member = self.guild and self.guild.get_member(int(member["user"]["id"]))  # type: ignore # user key should be present here
-                self.user = cached_member or Member(state=self._state, guild=guild, data=member)  # type: ignore # user key should be present here
+                # user key should be present here
+                cached_member = self.guild and self.guild.get_member(
+                    int(member["user"]["id"])  # type: ignore
+                )
+                self.user = cached_member or Member(
+                    state=self._state,
+                    guild=guild,  # type: ignore
+                    data=member,  # type: ignore
+                )
                 self._permissions = int(member.get("permissions", 0))
         else:
             try:
@@ -241,12 +253,18 @@ class Interaction(Hashable, Generic[ClientT]):
 
     @property
     def created_at(self) -> datetime:
-        """:class:`datetime.datetime`: An aware datetime in UTC representing the creation time of the interaction."""
+        """:class:`datetime.datetime`: The creation time of the interaction.
+
+        This is an aware datetime in UTC.
+        """
         return snowflake_time(self.id)
 
     @property
     def expires_at(self) -> datetime:
-        """:class:`datetime.datetime`: An aware datetime in UTC representing the time when the interaction will expire."""
+        """:class:`datetime.datetime`: The expiration time of the interaction.
+
+        This is an aware datetime in UTC.
+        """
         if self.response.is_done():
             return self.created_at + timedelta(minutes=15)
         else:
@@ -267,7 +285,7 @@ class Interaction(Hashable, Generic[ClientT]):
 
         Note that due to a Discord limitation, DM channels are not resolved since there is
         no data to complete them. These are :class:`PartialMessageable` instead.
-        """
+        """  # noqa: E501
         guild = self.guild
         channel = guild and guild._resolve_channel(self.channel_id)
         if channel is None:
@@ -282,7 +300,7 @@ class Interaction(Hashable, Generic[ClientT]):
         """:class:`Permissions`: The resolved permissions of the member in the channel, including overwrites.
 
         In a non-guild context where this doesn't apply, an empty permissions object is returned.
-        """
+        """  # noqa: E501
         return Permissions(self._permissions)
 
     @property
@@ -290,16 +308,16 @@ class Interaction(Hashable, Generic[ClientT]):
         """:class:`Permissions`: The resolved permissions of the bot in the channel, including overwrites.
 
         In a non-guild context where this doesn't apply, an empty permissions object is returned.
-        """
+        """  # noqa: E501
         return Permissions(self._app_permissions)
 
     @utils.cached_slot_property("_cs_response")
     def response(self) -> InteractionResponse:
         """:class:`InteractionResponse`: Returns an object responsible for handling responding to the interaction.
 
-        A response can only be done once. If secondary messages need to be sent, consider using :attr:`followup`
-        instead.
-        """
+        A response can only be done once. If secondary messages need to be sent,
+        consider using :attr:`followup` instead.
+        """  # noqa: E501
         return InteractionResponse(self)
 
     @utils.cached_slot_property("_cs_followup")
@@ -442,7 +460,11 @@ class Interaction(Hashable, Generic[ClientT]):
         )
 
         # The message channel types should always match
-        message = InteractionMessage(state=self._state, channel=self.channel, data=data)  # type: ignore
+        message = InteractionMessage(
+            state=self._state,
+            channel=self.channel,  # type: ignore
+            data=data,
+        )
         if view and not view.is_finished():
             self._state.store_view(view, message.id)
         return message
@@ -529,11 +551,14 @@ class Interaction(Hashable, Generic[ClientT]):
         Returns
         -------
         Union[:class:`PartialInteractionMessage`, :class:`WebhookMessage`]
-            If the interaction has not been responded to, returns a :class:`PartialInteractionMessage`
-            supporting only the :meth:`~PartialInteractionMessage.edit` and :meth:`~PartialInteractionMessage.delete`
-            operations. To fetch the :class:`InteractionMessage` you may use :meth:`~PartialInteractionMessage.fetch`
-            or :meth:`Interaction.original_message`.
-            If the interaction has been responded to, returns the :class:`WebhookMessage`.
+            If the interaction has not been responded to, returns a
+            :class:`PartialInteractionMessage` supporting only the
+            :meth:`~PartialInteractionMessage.edit` and
+            :meth:`~PartialInteractionMessage.delete` operations.
+            To fetch the :class:`InteractionMessage` you may use
+            :meth:`~PartialInteractionMessage.fetch` or
+            :meth:`Interaction.original_message`. If the interaction has been
+            responded to, returns the :class:`WebhookMessage`.
         """
 
         if not self.response.is_done():
@@ -644,11 +669,13 @@ class InteractionResponse:
         ----------
         ephemeral: :class:`bool`
             Indicates whether the deferred message will eventually be ephemeral.
-            This only applies for interactions of type :attr:`InteractionType.application_command` or when ``with_message`` is True
+            This only applies for interactions of type :attr:`InteractionType.application_command`
+            or when ``with_message`` is True
         with_message: :class:`bool`
-            Indicates whether the response will be a message with thinking state (bot is thinking...).
-            This is always True for interactions of type :attr:`InteractionType.application_command`.
-            For interactions of type :attr:`InteractionType.component` this defaults to False.
+            Indicates whether the response will be a message with thinking state
+            (bot is thinking...). This is always ``True`` for interactions of type
+            :attr:`InteractionType.application_command`. For interactions of type
+            :attr:`InteractionType.component` this defaults to False.
 
             .. versionadded:: 2.0
 
@@ -718,10 +745,11 @@ class InteractionResponse:
         ----------
         choices: Union[:class:`dict`, :class:`list`]
             The choices to send the user.
-            If a :class:`dict` is given, each key-value pair is turned into a name-value pair. Name is what Discord
-            shows the user, value is what Discord sends to the bot.
-            If something not a :class:`dict`, such as a :class:`list`, is given, each value is turned into a duplicate
-            name-value pair, where the display name and the value Discord sends back are the same.
+            If a :class:`dict` is given, each key-value pair is turned into a name-value
+            pair. Name is what Discord shows the user, value is what Discord sends
+            to the bot. If something not a :class:`dict`, such as a :class:`list`,
+            is given, each value is turned into a duplicate name-value pair,
+            where the display name and the value Discord sends back are the same.
 
         Raises
         ------
@@ -834,8 +862,9 @@ class InteractionResponse:
         Returns
         -------
         :class:`PartialInteractionMessage`
-            An object supporting only the :meth:`~PartialInteractionMessage.edit` and :meth:`~PartialInteractionMessage.delete`
-            operations. To fetch the :class:`InteractionMessage` you may use :meth:`PartialInteractionMessage.fetch`
+            An object supporting only the :meth:`~PartialInteractionMessage.edit` and
+            :meth:`~PartialInteractionMessage.delete` operations. To fetch the
+            :class:`InteractionMessage` you may use :meth:`PartialInteractionMessage.fetch`
             or :meth:`Interaction.original_message`.
         """
         if self._responded:
@@ -1250,7 +1279,8 @@ class PartialInteractionMessage(_InteractionMessageMixin):
 
     .. note::
         The hash of a :class:`PartialInteractionMessage` is the same as the hash of the
-        :class:`Interaction` that it is associated with but not that of the full :class:`InteractionMessage`.
+        :class:`Interaction` that it is associated with but not that of the full
+        :class:`InteractionMessage`.
     """
 
     def __init__(self, state: _InteractionMessageState) -> None:
@@ -1283,7 +1313,7 @@ class PartialInteractionMessage(_InteractionMessageMixin):
 
         If the interaction was in a guild, this is a :class:`Member` representing the client.
         Otherwise, this is a :class:`ClientUser`.
-        """
+        """  # noqa: E501
         return self.guild.me if self.guild else self._state._interaction.client.user
 
     @property
@@ -1292,7 +1322,7 @@ class PartialInteractionMessage(_InteractionMessageMixin):
 
         Note that due to a Discord limitation, DM channels are not resolved since there is
         no data to complete them. These are :class:`PartialMessageable` instead.
-        """
+        """  # noqa: E501
         return self._state._interaction.channel
 
     @property
@@ -1301,7 +1331,10 @@ class PartialInteractionMessage(_InteractionMessageMixin):
         return self._state._interaction.guild
 
     def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} author={self.author!r} channel={self.channel!r} guild={self.guild!r}>"
+        return (
+            f"<{self.__class__.__name__} author={self.author!r} "
+            f"channel={self.channel!r} guild={self.guild!r}>"
+        )
 
     def __eq__(self, other: object) -> bool:
         return (

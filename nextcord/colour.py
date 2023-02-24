@@ -96,7 +96,7 @@ class Colour:
         return self._get_byte(0)
 
     def to_rgb(self) -> Tuple[int, int, int]:
-        """Tuple[:class:`int`, :class:`int`, :class:`int`]: Returns an (r, g, b) tuple representing the colour."""
+        """Tuple[:class:`int`, :class:`int`, :class:`int`]: Returns an (r, g, b) tuple representing the colour."""  # noqa: E501
         return (self.r, self.g, self.b)
 
     @classmethod
@@ -132,7 +132,7 @@ class Colour:
             The seed to initialize the RNG with. If ``None`` is passed the default RNG is used.
 
             .. versionadded:: 1.7
-        """
+        """  # noqa: E501
         rand = random if seed is None else random.Random(seed)
         return cls.from_hsv(rand.random(), 1, 1)
 

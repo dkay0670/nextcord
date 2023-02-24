@@ -98,7 +98,10 @@ class StickerPack(Hashable):
         self.name: str = data["name"]
         self.sku_id: int = int(data["sku_id"])
         self.cover_sticker_id: int = int(data["cover_sticker_id"])
-        self.cover_sticker: StandardSticker = get(self.stickers, id=self.cover_sticker_id)  # type: ignore
+        self.cover_sticker: StandardSticker = get(
+            self.stickers,
+            id=self.cover_sticker_id,
+        )  # type: ignore
         self.description: str = data["description"]
         self._banner: int = int(data["banner_asset_id"])
 
@@ -387,8 +390,9 @@ class GuildSticker(Sticker):
     guild_id: :class:`int`
         The ID of the guild that this sticker is from.
     user: Optional[:class:`User`]
-        The user that created this sticker. This can only be retrieved using :meth:`Guild.fetch_sticker` and
-        having the :attr:`~Permissions.manage_emojis_and_stickers` permission.
+        The user that created this sticker. This can only be retrieved using
+        :meth:`Guild.fetch_sticker` and having the
+        :attr:`~Permissions.manage_emojis_and_stickers` permission.
     emoji: :class:`str`
         The name of a unicode emoji that represents this sticker.
     """
@@ -405,7 +409,10 @@ class GuildSticker(Sticker):
         self.type: StickerType = StickerType.guild
 
     def __repr__(self) -> str:
-        return f"<GuildSticker name={self.name!r} id={self.id} guild_id={self.guild_id} user={self.user!r}>"
+        return (
+            f"<GuildSticker name={self.name!r} id={self.id} guild_id={self.guild_id} "
+            f"user={self.user!r}>"
+        )
 
     @cached_slot_property("_cs_guild")
     def guild(self) -> Optional[Guild]:

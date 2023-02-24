@@ -213,7 +213,8 @@ class StreamIntegration(Integration):
         Parameters
         ----------
         expire_behaviour: :class:`ExpireBehaviour`
-            The behaviour when an integration subscription lapses. Aliased to ``expire_behavior`` as well.
+            The behaviour when an integration subscription lapses.
+            Aliased to ``expire_behavior`` as well.
         expire_grace_period: :class:`int`
             The period (in days) where the integration will ignore lapsed subscriptions.
         enable_emoticons: :class:`bool`

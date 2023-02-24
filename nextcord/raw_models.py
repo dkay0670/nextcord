@@ -115,7 +115,7 @@ class RawMessageUpdateEvent(_RawReprMixin):
         .. versionadded:: 1.7
 
     data: :class:`dict`
-        The raw data given by the `gateway <https://discord.com/developers/docs/topics/gateway#message-update>`_
+        The raw data given by the `gateway <https://discord.dev/topics/gateway#message-update>`_
     cached_message: Optional[:class:`Message`]
         The cached message, if found in the internal message cache. Represents the message before
         it is modified by the data in :attr:`RawMessageUpdateEvent.data`.
@@ -152,7 +152,8 @@ class RawReactionActionEvent(_RawReprMixin):
     emoji: :class:`PartialEmoji`
         The custom or unicode emoji being used.
     member: Optional[:class:`Member`]
-        The member who added the reaction. Only available if ``event_type`` is ``REACTION_ADD`` and the reaction is inside a guild.
+        The member who added the reaction. Only available if ``event_type``
+        is ``REACTION_ADD`` and the reaction is inside a guild.
 
         .. versionadded:: 1.3
 

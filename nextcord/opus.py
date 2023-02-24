@@ -272,8 +272,8 @@ def load_opus(name: str) -> None:
 
         On Windows, the .dll extension is not necessary. However, on Linux
         the full extension is required to load the library, e.g. ``libopus.so.1``.
-        On Linux however, :func:`ctypes.util.find_library` will usually find the library automatically
-        without you having to call this.
+        On Linux however, :func:`ctypes.util.find_library` will usually
+        find the library automatically without you having to call this.
 
     Parameters
     ----------

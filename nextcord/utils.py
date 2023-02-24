@@ -758,8 +758,9 @@ def remove_markdown(text: str, *, ignore_links: bool = True) -> str:
     .. versionadded:: 1.7
 
     .. note::
-            This function is not markdown aware and may remove meaning from the original text. For example,
-            if the input contains ``10 * 5`` then it will be converted into ``10  5``.
+
+        This function is not markdown aware and may remove meaning from the original text.
+        For example, if the input contains ``10 * 5`` then it will be converted into ``10  5``.
 
     Parameters
     ----------
@@ -856,7 +857,9 @@ def escape_mentions(text: str) -> str:
 
 
 def parse_raw_mentions(text: str) -> List[int]:
-    """A helper function that parses mentions from a string as an array of :class:`~nextcord.User` IDs
+    """A helper function that parses user mentions from a string.
+
+    This returns a :class:`list` of :class:`~nextcord.User` IDs
     matched with the syntax of ``<@user_id>`` or ``<@!user_id>``.
 
     .. note::
@@ -880,7 +883,9 @@ def parse_raw_mentions(text: str) -> List[int]:
 
 
 def parse_raw_role_mentions(text: str) -> List[int]:
-    """A helper function that parses mentions from a string as an array of :class:`~nextcord.Role` IDs
+    """A helper function that parses role mentions from a string.
+
+    This returns a :class:`list` of :class:`~nextcord.Role` IDs
     matched with the syntax of ``<@&role_id>``.
 
     .. versionadded:: 2.2
@@ -899,7 +904,9 @@ def parse_raw_role_mentions(text: str) -> List[int]:
 
 
 def parse_raw_channel_mentions(text: str) -> List[int]:
-    """A helper function that parses mentions from a string as an array of :class:`~nextcord.abc.GuildChannel` IDs
+    """A helper function that parses channel mentions from a string.
+
+    This returns a :class:`list` of :class:`~nextcord.abc.GuildChannel` IDs
     matched with the syntax of ``<#channel_id>``.
 
     .. versionadded:: 2.2
@@ -1107,8 +1114,8 @@ def format_dt(dt: datetime.datetime, /, style: Optional[TimestampStyle] = None) 
     | R           | 5 years ago                | Relative Time   |
     +-------------+----------------------------+-----------------+
 
-    Note that the exact output depends on the user's locale setting in the client. The example output
-    presented is using the ``en-GB`` locale.
+    Note that the exact output depends on the user's locale setting in the client.
+    The example output presented is using the ``en-GB`` locale.
 
     .. versionadded:: 2.0
 
@@ -1140,17 +1147,20 @@ _ARG_DESCRIPTION_SUBREGEX = r"(?P<description>(?:.|\n)+?(?:\Z|\r?\n(?=[\S\r\n]))
 _ARG_TYPE_SUBREGEX = r"(?P<type>.+)"
 
 _GOOGLE_DOCSTRING_ARG_REGEX = re.compile(
-    rf"^{_ARG_NAME_SUBREGEX}[ \t]*(?:\({_ARG_TYPE_SUBREGEX}\))?[ \t]*:[ \t]*{_ARG_DESCRIPTION_SUBREGEX}",
+    rf"^{_ARG_NAME_SUBREGEX}[ \t]*(?:\({_ARG_TYPE_SUBREGEX}\))?"
+    rf"[ \t]*:[ \t]*{_ARG_DESCRIPTION_SUBREGEX}",
     re.MULTILINE,
 )
 
 _SPHINX_DOCSTRING_ARG_REGEX = re.compile(
-    rf"^:param {_ARG_NAME_SUBREGEX}:[ \t]+{_ARG_DESCRIPTION_SUBREGEX}[ \t]*(?::type [^\s:]+:[ \t]+{_ARG_TYPE_SUBREGEX})?",
+    rf"^:param {_ARG_NAME_SUBREGEX}:[ \t]+{_ARG_DESCRIPTION_SUBREGEX}"
+    rf"[ \t]*(?::type [^\s:]+:[ \t]+{_ARG_TYPE_SUBREGEX})?",
     re.MULTILINE,
 )
 
 _NUMPY_DOCSTRING_ARG_REGEX = re.compile(
-    rf"^{_ARG_NAME_SUBREGEX}(?:[ \t]*:)?(?:[ \t]+{_ARG_TYPE_SUBREGEX})?[ \t]*\r?\n[ \t]+{_ARG_DESCRIPTION_SUBREGEX}",
+    rf"^{_ARG_NAME_SUBREGEX}(?:[ \t]*:)?(?:[ \t]+{_ARG_TYPE_SUBREGEX})?"
+    rf"[ \t]*\r?\n[ \t]+{_ARG_DESCRIPTION_SUBREGEX}",
     re.MULTILINE,
 )
 

@@ -378,7 +378,10 @@ class DeletedReferencedMessage:
         self._parent: MessageReference = parent
 
     def __repr__(self) -> str:
-        return f"<DeletedReferencedMessage id={self.id} channel_id={self.channel_id} guild_id={self.guild_id!r}>"
+        return (
+            f"<DeletedReferencedMessage id={self.id} channel_id={self.channel_id} "
+            f"guild_id={self.guild_id!r}>"
+        )
 
     @property
     def id(self) -> int:
@@ -491,7 +494,7 @@ class MessageReference:
 
     @property
     def cached_message(self) -> Optional[Message]:
-        """Optional[:class:`~nextcord.Message`]: The cached message, if found in the internal message cache."""
+        """Optional[:class:`~nextcord.Message`]: The cached message, if found in cache."""
         return self._state and self._state._get_message(self.message_id)
 
     @property
@@ -504,7 +507,10 @@ class MessageReference:
         return f"https://discord.com/channels/{guild_id}/{self.channel_id}/{self.message_id}"
 
     def __repr__(self) -> str:
-        return f"<MessageReference message_id={self.message_id!r} channel_id={self.channel_id!r} guild_id={self.guild_id!r}>"
+        return (
+            f"<MessageReference message_id={self.message_id!r} "
+            f"channel_id={self.channel_id!r} guild_id={self.guild_id!r}>"
+        )
 
     def to_dict(self) -> MessageReferencePayload:
         result: MessageReferencePayload = (
@@ -598,7 +604,10 @@ class MessageInteraction(Hashable):
             self.user = self._state.create_user(data=data["user"])
 
     def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} id={self.id} type={self.type} name={self.name} user={self.user!r}>"
+        return (
+            f"<{self.__class__.__name__} id={self.id} type={self.type} "
+            f"name={self.name} user={self.user!r}>"
+        )
 
     @property
     def created_at(self) -> datetime.datetime:
@@ -639,8 +648,9 @@ class Message(Hashable):
     content: :class:`str`
         The actual contents of the message.
     nonce: Optional[Union[:class:`str`, :class:`int`]]
-        The value used by the discord guild and the client to verify that the message is successfully sent.
-        This is not stored long term within Discord's servers and is only used ephemerally.
+        The value used by the discord guild and the client to verify that the message
+        is successfully sent. This is not stored long term within Discord's servers
+        and is only used ephemerally.
     embeds: List[:class:`Embed`]
         A list of embeds the message has.
     channel: Union[:class:`TextChannel`, :class:`Thread`, :class:`DMChannel`, :class:`GroupChannel`, :class:`PartialMessageable`]
@@ -659,8 +669,8 @@ class Message(Hashable):
         .. note::
 
             This does not check if the ``@everyone`` or the ``@here`` text is in the message itself.
-            Rather this boolean indicates if either the ``@everyone`` or the ``@here`` text is in the message
-            **and** it did end up mentioning.
+            Rather this boolean indicates if either the ``@everyone`` or the ``@here`` text is
+            in the message **and** it did end up mentioning.
     mentions: List[:class:`abc.User`]
         A list of :class:`Member` that were mentioned. If the message is in a private message
         then the list will be of :class:`User` instead. For messages that are not of type
@@ -672,8 +682,8 @@ class Message(Hashable):
             The order of the mentions list is not in any particular order so you should
             not rely on it. This is a Discord limitation, not one with the library.
     channel_mentions: List[:class:`abc.GuildChannel`]
-        A list of :class:`abc.GuildChannel` that were mentioned. If the message is in a private message
-        then the list is always empty.
+        A list of :class:`abc.GuildChannel` that were mentioned.
+        If the message is in a private message then the list is always empty.
     role_mentions: List[:class:`Role`]
         A list of :class:`Role` that were mentioned. If the message is in a private message
         then the list is always empty.
@@ -723,7 +733,7 @@ class Message(Hashable):
         The guild that the message belongs to, if applicable.
     interaction: Optional[:class:`MessageInteraction`]
         The interaction data of a message, if applicable.
-    """
+    """  # noqa: E501
 
     __slots__ = (
         "_state",
@@ -839,7 +849,11 @@ class Message(Hashable):
                         chan, _ = state._get_guild_channel(resolved)
 
                     # the channel will be the correct type here
-                    ref.resolved = self.__class__(channel=chan, data=resolved, state=state)  # type: ignore
+                    ref.resolved = self.__class__(
+                        channel=chan,  # type: ignore
+                        data=resolved,
+                        state=state,
+                    )
 
         for handler in ("author", "member", "mentions", "mention_roles"):
             try:
@@ -855,7 +869,10 @@ class Message(Hashable):
 
     def __repr__(self) -> str:
         name = self.__class__.__name__
-        return f"<{name} id={self.id} channel={self.channel!r} type={self.type!r} author={self.author!r} flags={self.flags!r}>"
+        return (
+            f"<{name} id={self.id} channel={self.channel!r} type={self.type!r} "
+            f"author={self.author!r} flags={self.flags!r}>"
+        )
 
     def _try_patch(self, data, key, transform=None) -> None:
         try:
@@ -1078,8 +1095,9 @@ class Message(Hashable):
         .. note::
 
             This *does not* affect markdown. If you want to escape
-            or remove markdown then use :func:`utils.escape_markdown` or :func:`utils.remove_markdown`
-            respectively, along with this function.
+            or remove markdown then use :func:`utils.escape_markdown`
+            or :func:`utils.remove_markdown` respectively,
+            along with this function.
         """
 
         # fmt: off
@@ -1125,7 +1143,10 @@ class Message(Hashable):
 
     @property
     def edited_at(self) -> Optional[datetime.datetime]:
-        """Optional[:class:`datetime.datetime`]: An aware UTC datetime object containing the edited time of the message."""
+        """Optional[:class:`datetime.datetime`]: The the edited time of the message.
+
+        This is an aware UTC datetime object.
+        """
         return self._edited_timestamp
 
     @property
@@ -1136,7 +1157,10 @@ class Message(Hashable):
 
     @property
     def thread(self) -> Optional[Thread]:
-        """Optional[:class:`Thread`]: The thread started from this message. None if no thread was started."""
+        """Optional[:class:`Thread`]: The thread started from this message.
+
+        This is ``None`` if no thread was started.
+        """
         if not isinstance(self.guild, Guild):
             return None
 
@@ -1220,40 +1244,75 @@ class Message(Hashable):
 
         if self.type is MessageType.premium_guild_tier_1:
             if not self.content:
-                return f"{self.author.name} just boosted the server! {self.guild} has achieved **Level 1!**"
+                return (
+                    f"{self.author.name} just boosted the server! "
+                    f"{self.guild} has achieved **Level 1!**"
+                )
             else:
-                return f"{self.author.name} just boosted the server **{self.content}** times! {self.guild} has achieved **Level 1!**"
+                return (
+                    f"{self.author.name} just boosted the server **{self.content}** times! "
+                    f"{self.guild} has achieved **Level 1!**"
+                )
 
         if self.type is MessageType.premium_guild_tier_2:
             if not self.content:
-                return f"{self.author.name} just boosted the server! {self.guild} has achieved **Level 2!**"
+                return (
+                    f"{self.author.name} just boosted the server! "
+                    f"{self.guild} has achieved **Level 2!**"
+                )
             else:
-                return f"{self.author.name} just boosted the server **{self.content}** times! {self.guild} has achieved **Level 2!**"
+                return (
+                    f"{self.author.name} just boosted the server **{self.content}** times! "
+                    f"{self.guild} has achieved **Level 2!**"
+                )
 
         if self.type is MessageType.premium_guild_tier_3:
             if not self.content:
-                return f"{self.author.name} just boosted the server! {self.guild} has achieved **Level 3!**"
+                return (
+                    f"{self.author.name} just boosted the server! "
+                    f"{self.guild} has achieved **Level 3!**"
+                )
             else:
-                return f"{self.author.name} just boosted the server **{self.content}** times! {self.guild} has achieved **Level 3!**"
+                return (
+                    f"{self.author.name} just boosted the server **{self.content}** times! "
+                    f"{self.guild} has achieved **Level 3!**"
+                )
 
         if self.type is MessageType.channel_follow_add:
             return f"{self.author.name} has added {self.content} to this channel"
 
         if self.type is MessageType.guild_stream:
             # the author will be a Member
-            return f"{self.author.name} is live! Now streaming {self.author.activity.name}"  # type: ignore
+            return (
+                f"{self.author.name} is live! "
+                f"Now streaming {self.author.activity.name}"  # type: ignore
+            )
 
         if self.type is MessageType.guild_discovery_disqualified:
-            return "This server has been removed from Server Discovery because it no longer passes all the requirements. Check Server Settings for more details."
+            return (
+                "This server has been removed from Server Discovery "
+                "because it no longer passes all the requirements. "
+                "Check Server Settings for more details."
+            )
 
         if self.type is MessageType.guild_discovery_requalified:
-            return "This server is eligible for Server Discovery again and has been automatically relisted!"
+            return (
+                "This server is eligible for Server Discovery again "
+                "and has been automatically relisted!"
+            )
 
         if self.type is MessageType.guild_discovery_grace_period_initial_warning:
-            return "This server has failed Discovery activity requirements for 1 week. If this server fails for 4 weeks in a row, it will be automatically removed from Discovery."
+            return (
+                "This server has failed Discovery activity requirements for 1 week. "
+                "If this server fails for 4 weeks in a row, "
+                "it will be automatically removed from Discovery."
+            )
 
         if self.type is MessageType.guild_discovery_grace_period_final_warning:
-            return "This server has failed Discovery activity requirements for 3 weeks in a row. If this server fails for 1 more week, it will be removed from Discovery."
+            return (
+                "This server has failed Discovery activity requirements for 3 weeks in a row. "
+                "If this server fails for 1 more week, it will be removed from Discovery."
+            )
 
         if self.type is MessageType.thread_created:
             return f"{self.author.name} started a thread: **{self.content}**. See all **threads**."
@@ -1269,7 +1328,10 @@ class Message(Hashable):
             return self.reference.resolved.content  # type: ignore
 
         if self.type is MessageType.guild_invite_reminder:
-            return "Wondering who to invite?\nStart by inviting anyone who can help you build the server!"
+            return (
+                "Wondering who to invite?\n"
+                "Start by inviting anyone who can help you build the server!"
+            )
 
     async def delete(self, *, delay: Optional[float] = None) -> None:
         """|coro|
@@ -1422,8 +1484,9 @@ class Message(Hashable):
             Controls the mentions being processed in this message. If this is
             passed, then the object is merged with :attr:`~nextcord.Client.allowed_mentions`.
             The merging behaviour only overrides attributes that have been explicitly passed
-            to the object, otherwise it uses the attributes set in :attr:`~nextcord.Client.allowed_mentions`.
-            If no object is passed at all then the defaults given by :attr:`~nextcord.Client.allowed_mentions`
+            to the object, otherwise it uses the attributes set i
+            :attr:`~nextcord.Client.allowed_mentions`. If no object is passed at all
+            then the defaults given by :attr:`~nextcord.Client.allowed_mentions`
             are used instead.
 
             .. versionadded:: 1.4
@@ -1909,7 +1972,7 @@ class PartialMessage(Hashable):
 
     @utils.cached_slot_property("_cs_guild")
     def guild(self) -> Optional[Guild]:
-        """Optional[:class:`Guild`]: The guild that the partial message belongs to, if applicable."""
+        """Optional[:class:`Guild`]: The guild that this message belongs to, if applicable."""
         return getattr(self.channel, "guild", None)
 
     async def fetch(self) -> Message:
@@ -1971,8 +2034,9 @@ class PartialMessage(Hashable):
             Controls the mentions being processed in this message. If this is
             passed, then the object is merged with :attr:`~nextcord.Client.allowed_mentions`.
             The merging behaviour only overrides attributes that have been explicitly passed
-            to the object, otherwise it uses the attributes set in :attr:`~nextcord.Client.allowed_mentions`.
-            If no object is passed at all then the defaults given by :attr:`~nextcord.Client.allowed_mentions`
+            to the object, otherwise it uses the attributes set in
+            :attr:`~nextcord.Client.allowed_mentions`. If no object is passed at all
+            then the defaults given by :attr:`~nextcord.Client.allowed_mentions`
             are used instead.
         view: Optional[:class:`~nextcord.ui.View`]
             The updated view to update this message with. If ``None`` is passed then

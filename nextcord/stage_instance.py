@@ -77,7 +77,10 @@ class StageInstance(Hashable):
         self.discoverable_disabled: bool = data.get("discoverable_disabled", False)
 
     def __repr__(self) -> str:
-        return f"<StageInstance id={self.id} guild={self.guild!r} channel_id={self.channel_id} topic={self.topic!r}>"
+        return (
+            f"<StageInstance id={self.id} guild={self.guild!r} "
+            f"channel_id={self.channel_id} topic={self.topic!r}>"
+        )
 
     @cached_slot_property("_cs_channel")
     def channel(self) -> Optional[StageChannel]:

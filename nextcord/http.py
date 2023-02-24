@@ -207,7 +207,10 @@ class HTTPClient:
         self.use_clock: bool = not unsync_clock
         self._dispatch: Callable = dispatch
 
-        user_agent = "DiscordBot (https://github.com/nextcord/nextcord/ {0}) Python/{1[0]}.{1[1]} aiohttp/{2}"
+        user_agent = (
+            "DiscordBot (https://github.com/nextcord/nextcord/ {0}) Python/{1[0]}.{1[1]} "
+            "aiohttp/{2}"
+        )
         self.user_agent: str = user_agent.format(__version__, sys.version_info, aiohttp.__version__)
 
     def recreate(self) -> None:
@@ -346,7 +349,10 @@ class HTTPClient:
                                 # Banned by Cloudflare more than likely.
                                 raise HTTPException(response, data)
 
-                            fmt = 'We are being rate limited. Retrying in %.2f seconds. Handled under the bucket "%s"'
+                            fmt = (
+                                "We are being rate limited. Retrying in %.2f seconds. "
+                                'Handled under the bucket "%s"'
+                            )
 
                             # sleep a bit
                             retry_after: float = data["retry_after"]

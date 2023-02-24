@@ -107,7 +107,7 @@ class RoleSelect(SelectBase, Generic[V]):
 
     @property
     def values(self) -> RoleSelectValues:
-        """:class:`.ui.RoleSelectValues`: A list of :class:`.Role` that have been selected by the user."""
+        """:class:`.ui.RoleSelectValues`: A list of :class:`.Role` selected by the user."""
         return self._selected_values
 
     def to_component_dict(self) -> RoleSelectMenuPayload:

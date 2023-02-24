@@ -51,7 +51,7 @@ class AppInfo:
 
     verify_key: :class:`str`
         The hex encoded key for verification in interactions and the
-        GameSDK's `GetTicket <https://discord.com/developers/docs/game-sdk/applications#getticket>`_.
+        GameSDK's `GetTicket <https://discord.dev/game-sdk/applications#getticket>`_.
 
         .. versionadded:: 1.3
 
@@ -135,7 +135,7 @@ class PartialAppInfo:
         A list of RPC origin URLs, if RPC is enabled.
     verify_key: :class:`str`
         The hex encoded key for verification in interactions and the
-        GameSDK's `GetTicket <https://discord.com/developers/docs/game-sdk/applications#getticket>`_.
+        GameSDK's `GetTicket <https://discord.dev/game-sdk/applications#getticket>`_.
     terms_of_service_url: Optional[:class:`str`]
         The application's terms of service URL, if set.
     privacy_policy_url: Optional[:class:`str`]
@@ -166,7 +166,10 @@ class PartialAppInfo:
         self.privacy_policy_url: Optional[str] = data.get("privacy_policy_url")
 
     def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} id={self.id} name={self.name!r} description={self.description!r}>"
+        return (
+            f"<{self.__class__.__name__} id={self.id} name={self.name!r} "
+            f"description={self.description!r}>"
+        )
 
     @property
     def icon(self) -> Optional[Asset]:

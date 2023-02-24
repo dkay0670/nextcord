@@ -464,7 +464,7 @@ class FlagConverter(metaclass=FlagsMeta):
 
     @classmethod
     def get_flags(cls) -> Dict[str, Flag]:
-        """Dict[:class:`str`, :class:`Flag`]: A mapping of flag name to flag object this converter has."""
+        """Dict[:class:`str`, :class:`Flag`]: A mapping of flag name to flag object this converter has."""  # noqa: E501
         return cls.__commands_flags__.copy()
 
     @classmethod

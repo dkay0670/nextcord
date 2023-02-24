@@ -67,8 +67,9 @@ class Emoji(_EmojiTag, AssetMixin):
     available: :class:`bool`
         Whether the emoji is available for use.
     user: Optional[:class:`User`]
-        The user that created the emoji. This can only be retrieved using :meth:`Guild.fetch_emoji` and
-        having the :attr:`~Permissions.manage_emojis` permission.
+        The user that created the emoji. This can only be retrieved using
+        :meth:`Guild.fetch_emoji` and having the
+        :attr:`~Permissions.manage_emojis` permission.
     """
 
     __slots__: Tuple[str, ...] = (
@@ -116,7 +117,10 @@ class Emoji(_EmojiTag, AssetMixin):
         return f"<:{self.name}:{self.id}>"
 
     def __repr__(self) -> str:
-        return f"<Emoji id={self.id} name={self.name!r} animated={self.animated} managed={self.managed}>"
+        return (
+            f"<Emoji id={self.id} name={self.name!r} animated={self.animated} "
+            f"managed={self.managed}>"
+        )
 
     def __eq__(self, other: Any) -> bool:
         return isinstance(other, _EmojiTag) and self.id == other.id
@@ -208,7 +212,8 @@ class Emoji(_EmojiTag, AssetMixin):
         name: :class:`str`
             The new emoji name.
         roles: Optional[List[:class:`~nextcord.abc.Snowflake`]]
-            A list of roles that can use this emoji. An empty list can be passed to make it available to everyone.
+            A list of roles that can use this emoji. An empty list can be passed
+            to make it available to everyone.
         reason: Optional[:class:`str`]
             The reason for editing this emoji. Shows up on the audit log.
 

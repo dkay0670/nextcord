@@ -162,7 +162,10 @@ class Paginator:
         return self._pages
 
     def __repr__(self) -> str:
-        fmt = "<Paginator prefix: {0.prefix!r} suffix: {0.suffix!r} linesep: {0.linesep!r} max_size: {0.max_size} count: {0._count}>"
+        fmt = (
+            "<Paginator prefix: {0.prefix!r} suffix: {0.suffix!r} linesep: "
+            "{0.linesep!r} max_size: {0.max_size} count: {0._count}>"
+        )
         return fmt.format(self)
 
 
@@ -683,8 +686,9 @@ class HelpCommand:
         ----------
         mapping: Mapping[Optional[:class:`Cog`], List[:class:`Command`]]
             A mapping of cogs to commands that have been requested by the user for help.
-            The key of the mapping is the :class:`~.commands.Cog` that the command belongs to, or
-            ``None`` if there isn't one, and the value is a list of commands that belongs to that cog.
+            The key of the mapping is the :class:`~.commands.Cog` that the command belongs to,
+            or ``None`` if there isn't one, and the value is a list of commands
+            that belongs to that cog.
         """
         return None
 
@@ -896,8 +900,8 @@ class DefaultHelpCommand(HelpCommand):
     indent: :class:`int`
         How much to indent the commands from a heading. Defaults to ``2``.
     commands_heading: :class:`str`
-        The command list's heading string used when the help command is invoked with a category name.
-        Useful for i18n. Defaults to ``"Commands:"``
+        The command list's heading string used when the help command is invoked
+        with a category name. Useful for internationalisation. Defaults to ``"Commands:"``
     no_category: :class:`str`
         The string used when there is a command which does not belong to any category(cog).
         Useful for i18n. Defaults to ``"No Category"``
@@ -926,11 +930,15 @@ class DefaultHelpCommand(HelpCommand):
         return text
 
     def get_ending_note(self) -> str:
-        """:class:`str`: Returns help command's ending note. This is mainly useful to override for i18n purposes."""
+        """:class:`str`: Returns help command's ending note.
+
+        This is mainly useful to override for internationalisation purposes.
+        """
         command_name = self.invoked_with
         return (
             f"Type {self.context.clean_prefix}{command_name} command for more info on a command.\n"
-            f"You can also type {self.context.clean_prefix}{command_name} category for more info on a category."
+            f"You can also type {self.context.clean_prefix}{command_name} category "
+            "for more info on a category."
         )
 
     def add_indented_commands(self, commands, *, heading, max_size=None) -> None:
@@ -1087,11 +1095,12 @@ class MinimalHelpCommand(HelpCommand):
     sort_commands: :class:`bool`
         Whether to sort the commands in the output alphabetically. Defaults to ``True``.
     commands_heading: :class:`str`
-        The command list's heading string used when the help command is invoked with a category name.
-        Useful for i18n. Defaults to ``"Commands"``
+        The command list's heading string used when the help command is
+        invoked with a category name. Useful for internationalisation.
+        Defaults to ``"Commands"``
     aliases_heading: :class:`str`
-        The alias list's heading string used to list the aliases of the command. Useful for i18n.
-        Defaults to ``"Aliases:"``.
+        The alias list's heading string used to list the aliases of the command.
+        Useful for internationalisation. Defaults to ``"Aliases:"``.
     dm_help: Optional[:class:`bool`]
         A tribool that indicates if the help command should DM the user instead of
         sending it to the channel it received it from. If the boolean is set to
@@ -1143,16 +1152,19 @@ class MinimalHelpCommand(HelpCommand):
         """
         command_name = self.invoked_with
         return (
-            f"Use `{self.context.clean_prefix}{command_name} [command]` for more info on a command.\n"
-            f"You can also use `{self.context.clean_prefix}{command_name} [category]` for more info on a category."
+            f"Use `{self.context.clean_prefix}{command_name} [command]` "
+            "for more info on a command.\n"
+            f"You can also use `{self.context.clean_prefix}{command_name} [category]` "
+            "for more info on a category."
         )
 
     def get_command_signature(self, command) -> str:
         return f"{self.context.clean_prefix}{command.qualified_name} {command.signature}"
 
     def get_ending_note(self):
-        """Return the help command's ending note. This is mainly useful to override for i18n purposes.
+        """Return the help command's ending note.
 
+        This is mainly useful to override for internationalisation purposes.
         The default implementation does nothing.
 
         Returns

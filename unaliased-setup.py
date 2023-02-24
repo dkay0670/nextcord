@@ -71,7 +71,9 @@ setup(
     version=version,
     packages=packages,
     license="MIT",
-    description="A Python wrapper for the Discord API forked from discord.py (without the discord alias)",
+    description=(
+        "A Python wrapper for the Discord API forked from discord.py (without the discord alias)"
+    ),
     long_description=readme,
     long_description_content_type="text/x-rst",
     include_package_data=True,

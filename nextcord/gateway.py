@@ -167,7 +167,10 @@ class KeepAliveHandler(threading.Thread):
                             msg = self.block_msg
                         else:
                             stack = "".join(traceback.format_stack(frame))
-                            msg = f"{self.block_msg}\nLoop thread traceback (most recent call last):\n{stack}"
+                            msg = (
+                                f"{self.block_msg}\nLoop thread traceback (most recent call last):"
+                                f"\n{stack}"
+                            )
                         _log.warning(msg, self.shard_id, total)
 
             except Exception:
@@ -527,9 +530,9 @@ class DiscordWebSocket:
             # pass back shard ID to ready handler
             data["__shard_id__"] = self.shard_id
             _log.info(
-                "Shard ID %s has connected to Gateway: %s (Session ID: %s). Resume URL specified as %s",
+                "Shard ID %s has connected to Gateway (Session ID: %s). "
+                "Resume URL specified as %s",
                 self.shard_id,
-                ", ".join(trace),
                 self.session_id,
                 self.resume_url,
             )

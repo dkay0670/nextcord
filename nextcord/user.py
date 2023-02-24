@@ -353,7 +353,8 @@ class ClientUser(BaseUser):
             The edit is no longer in-place, instead the newly edited client user is returned.
 
         .. versionchanged:: 2.1
-            The ``avatar`` parameter now accepts :class:`File`, :class:`Attachment`, and :class:`Asset`.
+            The ``avatar`` parameter now accepts :class:`File`, :class:`Attachment`,
+            and :class:`Asset`.
 
         Parameters
         ----------
@@ -429,7 +430,10 @@ class User(BaseUser, abc.Messageable):
         self._stored: bool = False
 
     def __repr__(self) -> str:
-        return f"<User id={self.id} name={self.name!r} discriminator={self.discriminator!r} bot={self.bot}>"
+        return (
+            f"<User id={self.id} name={self.name!r} "
+            f"discriminator={self.discriminator!r} bot={self.bot}>"
+        )
 
     def __del__(self) -> None:
         try:

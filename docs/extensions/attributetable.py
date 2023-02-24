@@ -194,7 +194,7 @@ def process_attributetable(app, doctree, fromdocname):
             if not subitems:
                 continue
 
-            def key(c):
+            def key(c: TableElement) -> str:
                 return c.label
 
             table.append(class_results_to_node(label, sorted(subitems, key=key)))

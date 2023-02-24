@@ -96,7 +96,8 @@ class AutoModerationTriggerMetadata:
 
         .. note::
 
-            This is ``None`` and cannot be provided if the trigger type of this rule is not :attr:`AutoModerationTriggerType.mention_spam`.
+            This is ``None`` and cannot be provided if the trigger type of this rule
+            is not :attr:`AutoModerationTriggerType.mention_spam`.
     """
 
     __slots__ = ("keyword_filter", "regex_patterns", "presets", "allow_list", "mention_total_limit")

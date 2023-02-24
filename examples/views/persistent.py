@@ -43,8 +43,8 @@ class Bot(commands.Bot):
             # Register the persistent view for listening here.
             # Note that this does not send the view to any message.
             # To do that, you need to send a message with the View as shown below.
-            # If you have the message_id you can also pass it as a keyword argument, but for this example
-            # we don't have one.
+            # If you have the message_id you can also pass it as a keyword argument,
+            # but for this example we don't have one.
             self.add_view(PersistentView())
             self.persistent_views_added = True
 

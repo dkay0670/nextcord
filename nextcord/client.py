@@ -200,45 +200,53 @@ class Client:
     enable_debug_events: :class:`bool`
         Whether to enable events that are useful only for debugging gateway related information.
 
-        Right now this involves :func:`on_socket_raw_receive` and :func:`on_socket_raw_send`. If
-        this is ``False`` then those events will not be dispatched (due to performance considerations).
-        To enable these events, this must be set to ``True``. Defaults to ``False``.
+        Right now this involves :func:`on_socket_raw_receive` and :func:`on_socket_raw_send`.
+        If this is ``False`` then those events will not be dispatched
+        (due to performance considerations). To enable these events, this must be set
+        to ``True``. Defaults to ``False``.
 
         .. versionadded:: 2.0
 
     lazy_load_commands: :class:`bool`
-        Whether to attempt to associate an unknown incoming application command ID with an existing application command.
+        Whether to attempt to associate an unknown incoming application command ID
+        with an existing application command.
 
-        If this is set to ``True``, the default, then the library will attempt to match up an unknown incoming
-        application command payload to an application command in the library.
+        If this is set to ``True``, the default, then the library will attempt
+        to match up an unknown incoming application command payload to an application
+        command in the library.
 
     rollout_associate_known: :class:`bool`
-        Whether during the application command rollout to associate found Discord commands with commands added locally.
-        Defaults to ``True``.
+        Whether during the application command rollout to associate found
+        Discord commands with commands added locally. Defaults to ``True``.
 
     rollout_delete_unknown: :class:`bool`
-        Whether during the application command rollout to delete commands from Discord that don't correspond with a
-        locally added command. Defaults to ``True``.
+        Whether during the application command rollout to delete commands from
+        Discord that don't correspond with a locally added command. Defaults to ``True``.
 
     rollout_register_new: :class:`bool`
-        Whether during the application command rollout to register new application commands that were added locally but
-        not found on Discord. Defaults to ``True``.
+        Whether during the application command rollout to register new
+        application commands that were added locally but not found on Discord.
+        Defaults to ``True``.
 
     rollout_update_known: :class:`bool`
-        Whether during the application command rollout to update known applications that share the same signature but
-        don't quite match what is registered on Discord. Defaults to ``True``.
+        Whether during the application command rollout to update known applications
+        that share the same signature but don't quite match what is registered on Discord.
+        Defaults to ``True``.
 
     rollout_all_guilds: :class:`bool`
-        Whether during the application command rollout to update to all guilds, instead of only ones with at least one
-        command to roll out to them. Defaults to ``False``
+        Whether during the application command rollout to update to all guilds,
+        instead of only ones with at least one command to roll out to them.
+        Defaults to ``False``
 
-        Warning: While enabling this will prevent "ghost" commands on guilds with removed code references, rolling out
-        to ALL guilds with anything other than a very small bot will likely cause it to get rate limited.
+        Warning: While enabling this will prevent "ghost" commands on guilds
+        with removed code references, rolling out to ALL guilds with anything
+        other than a very small bot will likely cause it to get rate limited.
 
     default_guild_ids: Optional[List[:class:`int`]]
-        The default guild ids for every application command set. If the application command doesn't have any explicit
-        guild ids set and this list is not empty, then the application command's guild ids will be set to this.
-        Defaults to ``None``.
+        The default guild ids for every application command set.
+        If the application command doesn't have any explicit guild ids set and
+        this list is not empty, then the application command's guild ids will be
+        set to this. Defaults to ``None``.
 
         .. versionadded:: 2.3
 
@@ -399,7 +407,10 @@ class Client:
 
     @property
     def user(self) -> Optional[ClientUser]:
-        """Optional[:class:`.ClientUser`]: Represents the connected client. ``None`` if not logged in."""
+        """Optional[:class:`.ClientUser`]: Represents the connected client.
+
+        This is ``None`` if not logged in.
+        """
         return self._connection.user
 
     @property
@@ -436,7 +447,7 @@ class Client:
 
             This returns only up to 128 most recent private channels due to an internal working
             on how Discord deals with private channels.
-        """
+        """  # noqa: E501
         return self._connection.private_channels
 
     @property
@@ -891,7 +902,8 @@ class Client:
         if value is None:
             self._connection._activity = None
         elif isinstance(value, BaseActivity):
-            # ConnectionState._activity is typehinted as ActivityPayload, we're passing Dict[str, Any]
+            # ConnectionState._activity is typehinted as ActivityPayload,
+            # we're passing Dict[str, Any]
             self._connection._activity = value.to_dict()  # type: ignore
         else:
             raise TypeError("activity must derive from BaseActivity.")
@@ -1224,8 +1236,7 @@ class Client:
             Returns no arguments, a single argument, or a :class:`tuple` of multiple
             arguments that mirrors the parameters passed in the
             :ref:`event reference <discord-api-events>`.
-        """
-
+        """  # noqa: E501
         future = self.loop.create_future()
         if check is None:
 
@@ -1249,9 +1260,11 @@ class Client:
     def event(self, coro: Coro) -> Coro:
         """A decorator that registers an event to listen to.
 
-        You can find more info about the events on the :ref:`documentation below <discord-api-events>`.
+        You can find more info about the events on the
+        :ref:`documentation below <discord-api-events>`.
 
-        The events must be a :ref:`coroutine <coroutine>`, if not, :exc:`TypeError` is raised.
+        The events must be a :ref:`coroutine <coroutine>`, if not,
+        :exc:`TypeError` is raised.
 
         Example
         -------
@@ -1482,7 +1495,8 @@ class Client:
         Bot accounts in more than 10 guilds are not allowed to create guilds.
 
         .. versionchanged:: 2.1
-            The ``icon`` parameter now accepts :class:`File`, :class:`Attachment`, and :class:`Asset`.
+            The ``icon`` parameter now accepts :class:`File`, :class:`Attachment`,
+            and :class:`Asset`.
 
         Parameters
         ----------
@@ -1493,7 +1507,8 @@ class Client:
             Defaults to :attr:`.VoiceRegion.us_west`.
         icon: Optional[Union[:class:`bytes`, :class:`Asset`, :class:`Attachment`, :class:`File`]]
             The :term:`py:bytes-like object`, :class:`File`, :class:`Attachment`, or :class:`Asset`
-            representing the icon. See :meth:`.ClientUser.edit` for more details on what is expected.
+            representing the icon. See :meth:`.ClientUser.edit`
+            for more details on what is expected.
         code: :class:`str`
             The code for a template to create the guild with.
 
@@ -1683,7 +1698,8 @@ class Client:
 
         .. note::
 
-            This method is an API call. If you have :attr:`nextcord.Intents.members` and member cache enabled, consider :meth:`get_user` instead.
+            This method is an API call. If you have :attr:`nextcord.Intents.members`
+            and member cache enabled, consider :meth:`get_user` instead.
 
         Parameters
         ----------
@@ -1710,7 +1726,8 @@ class Client:
     ) -> Union[GuildChannel, PrivateChannel, Thread]:
         """|coro|
 
-        Retrieves a :class:`.abc.GuildChannel`, :class:`.abc.PrivateChannel`, or :class:`.Thread` with the specified ID.
+        Retrieves a :class:`.abc.GuildChannel`, :class:`.abc.PrivateChannel`,
+        or :class:`.Thread` with the specified ID.
 
         .. note::
 
@@ -1875,7 +1892,8 @@ class Client:
 
         if not view.is_persistent():
             raise ValueError(
-                "View is not persistent. Items need to have a custom_id set and View must have no timeout"
+                "View is not persistent. Items need to have a custom_id set "
+                "and View must have no timeout"
             )
 
         self._connection.store_view(view, message_id)
@@ -1909,7 +1927,8 @@ class Client:
 
         if not view.is_persistent():
             raise ValueError(
-                "View is not persistent. Items need to have a custom_id set and View must have no timeout"
+                "View is not persistent. Items need to have a custom_id set "
+                "and View must have no timeout"
             )
 
         self._connection.remove_view(view, message_id)
@@ -1943,7 +1962,8 @@ class Client:
 
         if not modal.is_persistent():
             raise ValueError(
-                "Modal is not persistent. Modal must have no timeout and Items and Modal need to have custom_id set"
+                "Modal is not persistent. Modal must have no timeout "
+                "and Items and Modal need to have custom_id set"
             )
 
         self._connection.store_modal(modal, user_id)
@@ -1975,7 +1995,8 @@ class Client:
 
         if not modal.is_persistent():
             raise ValueError(
-                "Modal is not persistent. Modal must have no timeout and Items and Modal need to have custom_id set"
+                "Modal is not persistent. Modal must have no timeout "
+                "and Items and Modal need to have custom_id set"
             )
 
         self._connection.remove_modal(modal)
@@ -2001,14 +2022,16 @@ class Client:
 
     async def process_application_commands(self, interaction: Interaction) -> None:
         """|coro|
+
         Processes the data in the given interaction and calls associated applications or autocomplete if possible.
+
         Lazy-loads commands if enabled.
 
         Parameters
         ----------
         interaction: :class:`Interaction`
             Interaction from Discord to read data from.
-        """
+        """  # noqa: E501
         interaction.data = cast(ApplicationCommandInteractionData, interaction.data)
 
         if interaction.type is InteractionType.application_command:
@@ -2040,7 +2063,8 @@ class Client:
                     )
                     if app_cmd.is_interaction_valid(interaction):
                         _log.debug(
-                            "nextcord.Client: Interaction seems to correspond to command %s, associating ID now.",
+                            "nextcord.Client: Interaction seems to correspond to command %s, "
+                            "associating ID now.",
                             app_cmd.error_name,
                         )
                         app_cmd.parse_discord_response(self._connection, interaction.data)
@@ -2076,8 +2100,8 @@ class Client:
                 await app_cmd.call_autocomplete_from_interaction(interaction)  # type: ignore
             else:
                 raise ValueError(
-                    f"Received autocomplete interaction for {interaction.data['name']} but command isn't "
-                    f"found/associated!"
+                    f"Received autocomplete interaction for {interaction.data['name']} "
+                    "but command isn't found/associated!"
                 )
 
     def get_application_command(self, command_id: int) -> Optional[BaseApplicationCommand]:
@@ -2108,7 +2132,8 @@ class Client:
         cmd_type: Union[:class:`int`, :class:`ApplicationCommandType`]
             Type of application command.
         guild_id: Optional[:class:`int`]
-            Guild ID of the signature. If set to ``None``, it will attempt to get the global signature.
+            Guild ID of the signature. If set to ``None``,
+            it will attempt to get the global signature.
 
         Returns
         -------
@@ -2135,7 +2160,8 @@ class Client:
         Parameters
         ----------
         rollout: :class:`bool`
-            Whether unregistered/unassociated commands should be returned as well. Defaults to ``False``
+            Whether unregistered/unassociated commands should be returned as well.
+            Defaults to ``False``
 
         Returns
         -------
@@ -2158,11 +2184,14 @@ class Client:
         command: :class:`ApplicationCommand`
             Command to add to the client for usage.
         overwrite: :class:`bool`
-            If to overwrite any existing commands that would conflict with this one. Defaults to ``False``
+            If to overwrite any existing commands that would conflict with this one.
+            Defaults to ``False``
         use_rollout: :class:`bool`
-            If to apply the rollout signatures instead of existing ones. Defaults to ``False``
+            If to apply the rollout signatures instead of existing ones.
+            Defaults to ``False``
         pre_remove: :class:`bool`
-            If the command should be removed before adding it. This will clear all signatures from storage, including
+            If the command should be removed before adding it.
+            This will clear all signatures from storage, including
             rollout ones.
         """
         if command.use_default_guild_ids:
@@ -2186,43 +2215,50 @@ class Client:
     ) -> None:
         """|coro|
 
-        Syncs all application commands with Discord. Will sync global commands if any commands added are global, and
-        syncs with all guilds that have an application command targeting them.
+        Syncs all application commands with Discord.
+        Will sync global commands if any commands added are global,
+        and syncs with all guilds that have an application command targeting them.
 
-        This may call Discord many times depending on how different guilds you have local commands for, and how many
-        commands Discord needs to be updated or added, which may cause your bot to be rate limited or even Cloudflare
+        This may call Discord many times depending on how different guilds
+        you have local commands for, and how many commands Discord needs to be updated
+        or added, which may cause your bot to be rate limited or even Cloudflare
         banned in VERY extreme cases.
 
-        This may incur high CPU usage depending on how many commands you have and how complex they are, which may cause
-        your bot to halt while it checks local commands against the existing commands that Discord has.
+        This may incur high CPU usage depending on how many commands you have
+        and how complex they are, which may cause your bot to halt while it checks
+        local commands against the existing commands that Discord has.
 
         For a more targeted version of this method, see :func:`Client.sync_application_commands`
 
         Parameters
         ----------
         data: Optional[Dict[Optional[:class:`int`], List[:class:`dict`]]]
-            Data to use when comparing local application commands to what Discord has. The key should be the
-            :class:`int` guild ID (`None` for global) corresponding to the value list of application command payloads
-            from Discord. Any guild ID's not provided will be fetched if needed. Defaults to ``None``
+            Data to use when comparing local application commands to what Discord has.
+            The key should be the :class:`int` guild ID (`None` for global)
+            corresponding to the value list of application command payloads from Discord.
+            Any guild ID's not provided will be fetched if needed. Defaults to ``None``
         use_rollout: :class:`bool`
             If the rollout guild IDs of commands should be used. Defaults to ``True``
         associate_known: :class:`bool`
-            If local commands that match a command already on Discord should be associated with each other.
+            If local commands that match a command already on Discord
+            should be associated with each other.
             Defaults to ``True``
         delete_unknown: :class:`bool`
-            If commands on Discord that don't match a local command should be deleted. Defaults to ``True``
+            If commands on Discord that don't match a local command should be deleted.
+            Defaults to ``True``
         update_known: :class:`bool`
-            If commands on Discord have a basic match with a local command, but don't fully match, should be updated.
-            Defaults to ``True``
+            If commands on Discord have a basic match with a local command,
+            but don't fully match, should be updated. Defaults to ``True``
         register_new: :class:`bool`
-            If a local command that doesn't have a basic match on Discord should be added to Discord.
-            Defaults to ``True``
+            If a local command that doesn't have a basic match on Discord
+            should be added to Discord. Defaults to ``True``
         ignore_forbidden: :class:`bool`
-            If this command should suppress a :class:`errors.Forbidden` exception when the bot encounters a guild
-            where it doesn't have permissions to view application commands.
-            Defaults to ``True``
+            If this command should suppress a :class:`errors.Forbidden` exception
+            when the bot encounters a guild where it doesn't have permissions
+            to view application commands. Defaults to ``True``
         """
-        # All this does is passthrough to connection state. All documentation updates should also be updated
+        # All this does is passthrough to connection state.
+        # All documentation updates should also be updated
         # there, and vice versa.
         await self._connection.sync_all_application_commands(
             data=data,
@@ -2245,30 +2281,34 @@ class Client:
         register_new: bool = True,
     ) -> None:
         """|coro|
-        Syncs the locally added application commands with the Guild corresponding to the given ID, or syncs
-        global commands if the guild_id is ``None``.
+
+        Syncs the locally added application commands with the Guild
+        corresponding to the given ID, or syncs global commands if the guild_id is ``None``.
 
         Parameters
         ----------
         data: Optional[List[:class:`dict`]]
-            Data to use when comparing local application commands to what Discord has. Should be a list of application
-            command data from Discord. If left as ``None``, it will be fetched if needed. Defaults to ``None``.
+            Data to use when comparing local application commands to what Discord has.
+            Should be a list of application command data from Discord.
+            If left as ``None``, it will be fetched if needed. Defaults to ``None``.
         guild_id: Optional[:class:`int`]
-            ID of the guild to sync application commands with. If set to ``None``, global commands will be synced instead.
-            Defaults to ``None``.
+            ID of the guild to sync application commands with. If set to ``None``,
+            global commands will be synced instead. Defaults to ``None``.
         associate_known: :class:`bool`
-            If local commands that match a command already on Discord should be associated with each other.
-            Defaults to ``True``.
+            If local commands that match a command already on Discord
+            should be associated with each other. Defaults to ``True``.
         delete_unknown: :class:`bool`
-            If commands on Discord that don't match a local command should be deleted. Defaults to ``True``.
+            If commands on Discord that don't match a local command should be deleted.
+            Defaults to ``True``.
         update_known: :class:`bool`
-            If commands on Discord have a basic match with a local command, but don't fully match, should be updated.
-            Defaults to ``True``.
+            If commands on Discord have a basic match with a local command,
+            but don't fully match, should be updated. Defaults to ``True``.
         register_new: :class:`bool`
-            If a local command that doesn't have a basic match on Discord should be added to Discord.
-            Defaults to ``True``.
+            If a local command that doesn't have a basic match on Discord
+            should be added to Discord. Defaults to ``True``.
         """
-        # All this does is passthrough to connection state. All documentation updates should also be updated
+        # All this does is passthrough to connection state.
+        # All documentation updates should also be updated
         # there, and vice versa.
         await self._connection.sync_application_commands(
             data=data,
@@ -2289,28 +2329,35 @@ class Client:
         update_known: bool = True,
     ) -> None:
         """|coro|
-        Associates existing, deletes unknown, and updates modified commands for either global commands or a specific
-        guild. This does a deep check on found commands, which may be expensive CPU-wise.
+        Associates existing, deletes unknown, and updates modified commands for either
+        global commands or a specific guild. This does a deep check on found commands,
+        which may be expensive CPU-wise.
 
-        Running this for global or the same guild multiple times at once may cause unexpected or unstable behavior.
+        Running this for global or the same guild multiple times at once
+        may cause unexpected or unstable behavior.
 
         Parameters
         ----------
         data: Optional[List[:class:`dict`]]
-            Payload from ``HTTPClient.get_guild_commands`` or ``HTTPClient.get_global_commands`` to deploy with. If None,
+            Payload from ``HTTPClient.get_guild_commands`` or
+            ``HTTPClient.get_global_commands`` to deploy with. If None,
             the payload will be retrieved from Discord.
         guild_id: Optional[:class:`int`]
-            Guild ID to deploy application commands to. If ``None``, global commands are deployed to.
+            Guild ID to deploy application commands to. If ``None``,
+            global commands are deployed to.
         associate_known: :class:`bool`
-            If True, commands on Discord that pass a signature check and a deep check will be associated with locally
-            added ApplicationCommand objects.
+            If True, commands on Discord that pass a signature check
+            and a deep check will be associated with locally added ApplicationCommand objects.
         delete_unknown: :class:`bool`
-            If ``True``, commands on Discord that fail a signature check will be removed. If ``update_known`` is ``False``,
-            commands that pass the signature check but fail the deep check will also be removed.
+            If ``True``, commands on Discord that fail a signature check will be removed.
+            If ``update_known`` is ``False``, commands that pass the signature check
+            but fail the deep check will also be removed.
         update_known: :class:`bool`
-            If ``True``, commands on Discord that pass a signature check but fail the deep check will be updated.
+            If ``True``, commands on Discord that pass a signature check
+            but fail the deep check will be updated.
         """
-        # All this does is passthrough to connection state. All documentation updates should also be updated
+        # All this does is passthrough to connection state.
+        # All documentation updates should also be updated
         # there, and vice versa.
         await self._connection.discover_application_commands(
             data=data,
@@ -2330,7 +2377,8 @@ class Client:
         update_known: bool = True,
     ) -> None:
         warnings.warn(
-            ".deploy_application_commands is deprecated, use .discover_application_commands instead.",
+            ".deploy_application_commands is deprecated, "
+            "use .discover_application_commands instead.",
             stacklevel=2,
             category=FutureWarning,
         )
@@ -2347,8 +2395,8 @@ class Client:
     ) -> None:
         """Deletes unknown global commands."""
         warnings.warn(
-            ".delete_unknown_application_commands is deprecated, use .sync_application_commands and set "
-            "kwargs in it instead.",
+            ".delete_unknown_application_commands is deprecated, "
+            "use .sync_application_commands and set kwargs in it instead.",
             stacklevel=2,
             category=FutureWarning,
         )
@@ -2382,19 +2430,21 @@ class Client:
         self, data: Optional[List[ApplicationCommandPayload]] = None, guild_id: Optional[int] = None
     ) -> None:
         """|coro|
-        Registers locally added application commands that don't match a signature that Discord has registered for
-        either global commands or a specific guild.
+        Registers locally added application commands that don't match a signature that
+        Discord has registered for either global commands or a specific guild.
 
         Parameters
         ----------
         data: Optional[List[:class:`dict`]]
-            Data to use when comparing local application commands to what Discord has. Should be a list of application
-            command data from Discord. If left as ``None``, it will be fetched if needed. Defaults to ``None``
+            Data to use when comparing local application commands to what Discord has.
+            Should be a list of application command data from Discord.
+            If left as ``None``, it will be fetched if needed. Defaults to ``None``
         guild_id: Optional[:class:`int`]
-            ID of the guild to sync application commands with. If set to ``None``, global commands will be synced instead.
-            Defaults to ``None``.
+            ID of the guild to sync application commands with. If set to ``None``,
+            global commands will be synced instead. Defaults to ``None``.
         """
-        # All this does is passthrough to connection state. All documentation updates should also be updated
+        # All this does is passthrough to connection state.
+        # All documentation updates should also be updated
         # there, and vice versa.
         await self._connection.register_new_application_commands(data=data, guild_id=guild_id)
 
@@ -2402,16 +2452,17 @@ class Client:
         self, *commands: BaseApplicationCommand, guild_id: Optional[int] = None
     ) -> None:
         """|coro|
-        Registers the given application commands either for a specific guild or globally, and adds the commands to
-        the bot.
+        Registers the given application commands either for a specific guild or globally,
+        and adds the commands to the bot.
 
         Parameters
         ----------
         commands: :class:`BaseApplicationCommand`
             Application command to register. Multiple args are accepted.
         guild_id: Optional[:class:`int`]
-            ID of the guild to register the application commands to. If set to ``None``, the commands will be registered
-            as global commands instead. Defaults to ``None``.
+            ID of the guild to register the application commands to.
+            If set to ``None``, the commands will be registered as global commands instead.
+            Defaults to ``None``.
         """
         for command in commands:
             await self._connection.register_application_command(command, guild_id=guild_id)
@@ -2420,16 +2471,17 @@ class Client:
         self, *commands: BaseApplicationCommand, guild_id: Optional[int] = None
     ) -> None:
         """|coro|
-        Deletes the given application commands either from a specific guild or globally, and removes the command IDs +
-        signatures from the bot.
+        Deletes the given application commands either from a specific guild or globally,
+        and removes the command IDs + signatures from the bot.
 
         Parameters
         ----------
         commands: :class:`BaseApplicationCommand`
             Application command to delete. Multiple args are accepted.
         guild_id: Optional[:class:`int`]
-            ID of the guild to delete the application commands from. If set to ``None``, the commands will be deleted
-            from global commands instead. Defaults to ``None``.
+            ID of the guild to delete the application commands from.
+            If set to ``None``, the commands will be deleted from global commands instead.
+            Defaults to ``None``.
         """
         for command in commands:
             await self._connection.delete_application_command(command, guild_id=guild_id)
@@ -2465,17 +2517,18 @@ class Client:
         )
 
     def add_all_application_commands(self) -> None:
-        """Adds application commands that are either decorated by the Client or added via a cog to the state.
+        """Adds application commands that are either
+        decorated by the Client or added via a cog to the state.
         This does not register commands with Discord. If you want that, use
         :meth:`~Client.sync_all_application_commands` instead.
-
         """
         self._add_decorated_application_commands()
         self.add_all_cog_commands()
 
     def add_startup_application_commands(self) -> None:
         warnings.warn(
-            ".add_startup_application_commands is deprecated, use .add_all_application_commands instead.",
+            ".add_startup_application_commands is deprecated, "
+            "use .add_all_application_commands instead.",
             stacklevel=2,
             category=FutureWarning,
         )
@@ -2504,8 +2557,8 @@ class Client:
 
         except Forbidden as e:
             _log.warning(
-                f"nextcord.Client: Forbidden error for {guild.name}|{guild.id}, is the commands Oauth scope "
-                f"enabled? {e}"
+                f"nextcord.Client: Forbidden error for {guild.name}|{guild.id}, "
+                f"is the commands Oauth scope enabled? {e}"
             )
 
     async def rollout_application_commands(self) -> None:
@@ -2539,7 +2592,7 @@ class Client:
             self.add_application_command(command, use_rollout=True, pre_remove=False)
 
     def add_all_cog_commands(self) -> None:
-        """Adds all :class:`ApplicationCommand` objects inside added cogs to the application command list."""
+        """Adds all :class:`ApplicationCommand` objects inside added cogs to the application command list."""  # noqa: E501
         for cog in self._client_cogs:
             if to_register := cog.application_commands:
                 for cmd in to_register:
@@ -2574,28 +2627,34 @@ class Client:
         Parameters
         ----------
         name: :class:`str`
-            Name of the command that users will see. If not set, it defaults to the name of the callback.
+            Name of the command that users will see. If not set,
+            it defaults to the name of the callback.
         name_localizations: Dict[Union[:class:`Locale`, :class:`str`], :class:`str`]
-            Name(s) of the command for users of specific locales. The locale code should be the key, with the localized
-            name as the value
+            Name(s) of the command for users of specific locales.
+            The locale code should be the key, with the localized name as the value
         guild_ids: Optional[Iterable[:class:`int`]]
-            IDs of :class:`Guild`'s to add this command to. If not passed and :attr:`Client.default_guild_ids` is
-            set, then those default guild ids will be used instead. If both of those are unset, then the command will
-            be a global command.
+            IDs of :class:`Guild`'s to add this command to. If not passed
+            and :attr:`Client.default_guild_ids` is set, then those default guild ids
+            will be used instead. If both of those are unset, then the command
+            will be a global command.
         dm_permission: :class:`bool`
-            If the command should be usable in DMs or not. Setting to ``False`` will disable the command from being
-            usable in DMs. Only for global commands, but will not error on guild.
+            If the command should be usable in DMs or not.
+            Setting to ``False`` will disable the command from being usable in DMs.
+            Only for global commands, but will not error on guild.
         default_member_permissions: Optional[Union[:class:`Permissions`, :class:`int`]]
-            Permission(s) required to use the command. Inputting ``8`` or ``Permissions(administrator=True)`` for
-            example will only allow Administrators to use the command. If set to 0, nobody will be able to use it by
-            default. Server owners CAN override the permission requirements.
+            Permission(s) required to use the command. Inputting ``8``
+            or ``Permissions(administrator=True)`` for example will only allow
+            Administrators to use the command. If set to 0, nobody will be able to use it
+            by default. Server owners CAN override the permission requirements.
         nsfw: :class:`bool`
-            Whether the command can only be used in age-restricted channels. Defaults to ``False``.
+            Whether the command can only be used in age-restricted channels.
+            Defaults to ``False``.
 
             .. versionadded:: 2.4
         force_global: :class:`bool`
-            If True, will force this command to register as a global command, even if ``guild_ids`` is set. Will still
-            register to guilds. Has no effect if ``guild_ids`` are never set or added to.
+            If True, will force this command to register as a global command,
+            even if ``guild_ids`` is set. Will still register to guilds.
+            Has no effect if ``guild_ids`` are never set or added to.
         """
 
         def decorator(func: Callable):
@@ -2629,28 +2688,34 @@ class Client:
         Parameters
         ----------
         name: :class:`str`
-            Name of the command that users will see. If not set, it defaults to the name of the callback.
+            Name of the command that users will see. If not set,
+            it defaults to the name of the callback.
         name_localizations: Dict[Union[:class:`Locale`, :class:`str`], :class:`str`]
-            Name(s) of the command for users of specific locales. The locale code should be the key, with the localized
-            name as the value
+            Name(s) of the command for users of specific locales.
+            The locale code should be the key, with the localized name as the value
         guild_ids: Optional[Iterable[:class:`int`]]
-            IDs of :class:`Guild`'s to add this command to. If not passed and :attr:`Client.default_guild_ids` is
-            set, then those default guild ids will be used instead. If both of those are unset, then the command will
-            be a global command.
+            IDs of :class:`Guild`'s to add this command to. If not passed
+            and :attr:`Client.default_guild_ids` is set, then those default guild ids
+            will be used instead. If both of those are unset, then the command
+            will be a global command.
         dm_permission: :class:`bool`
-            If the command should be usable in DMs or not. Setting to ``False`` will disable the command from being
-            usable in DMs. Only for global commands, but will not error on guild.
+            If the command should be usable in DMs or not. Setting to ``False``
+            will disable the command from being usable in DMs.
+            Only for global commands, but will not error on guild.
         default_member_permissions: Optional[Union[:class:`Permissions`, :class:`int`]]
-            Permission(s) required to use the command. Inputting ``8`` or ``Permissions(administrator=True)`` for
-            example will only allow Administrators to use the command. If set to 0, nobody will be able to use it by
-            default. Server owners CAN override the permission requirements.
+            Permission(s) required to use the command. Inputting ``8``
+            or ``Permissions(administrator=True)`` for example will only allow
+            Administrators to use the command. If set to 0, nobody will be able to use it
+            by default. Server owners CAN override the permission requirements.
         nsfw: :class:`bool`
-            Whether the command can only be used in age-restricted channels. Defaults to ``False``.
+            Whether the command can only be used in age-restricted channels.
+            Defaults to ``False``.
 
             .. versionadded:: 2.4
         force_global: :class:`bool`
-            If True, will force this command to register as a global command, even if ``guild_ids`` is set. Will still
-            register to guilds. Has no effect if ``guild_ids`` are never set or added to.
+            If True, will force this command to register as a global command,
+            even if ``guild_ids`` is set. Will still register to guilds.
+            Has no effect if ``guild_ids`` are never set or added to.
         """
 
         def decorator(func: Callable):
@@ -2685,34 +2750,41 @@ class Client:
         Parameters
         ----------
         name: :class:`str`
-            Name of the command that users will see. If not set, it defaults to the name of the callback.
+            Name of the command that users will see. If not set,
+            it defaults to the name of the callback.
         description: :class:`str`
-            Description of the command that users will see. If not set, the docstring will be used.
-            If no docstring is found for the command callback, it defaults to "No description provided".
+            Description of the command that users will see. If not set,
+            the docstring will be used. If no docstring is found for the command callback,
+            it defaults to "No description provided".
         name_localizations: Dict[Union[:class:`Locale`, :class:`str`], :class:`str`]
-            Name(s) of the command for users of specific locales. The locale code should be the key, with the localized
-            name as the value.
+            Name(s) of the command for users of specific locales.
+            The locale code should be the key, with the localized name as the value.
         description_localizations: Dict[Union[:class:`Locale`, :class:`str`], :class:`str`]
-            Description(s) of the command for users of specific locales. The locale code should be the key, with the
-            localized description as the value.
+            Description(s) of the command for users of specific locales.
+            The locale code should be the key, with the localized description as the value.
         guild_ids: Optional[Iterable[:class:`int`]]
-            IDs of :class:`Guild`'s to add this command to. If not passed and :attr:`Client.default_guild_ids` is
-            set, then those default guild ids will be used instead. If both of those are unset, then the command will
-            be a global command.
+            IDs of :class:`Guild`'s to add this command to. If not passed
+            and :attr:`Client.default_guild_ids` is set, then those default guild ids
+            will be used instead. If both of those are unset, then the command
+            will be a global command.
         dm_permission: :class:`bool`
-            If the command should be usable in DMs or not. Setting to ``False`` will disable the command from being
-            usable in DMs. Only for global commands, but will not error on guild.
+            If the command should be usable in DMs or not. Setting to ``False``
+            will disable the command from being usable in DMs. Only for global commands,
+            but will not error on guild.
         default_member_permissions: Optional[Union[:class:`Permissions`, :class:`int`]]
-            Permission(s) required to use the command. Inputting ``8`` or ``Permissions(administrator=True)`` for
-            example will only allow Administrators to use the command. If set to 0, nobody will be able to use it by
-            default. Server owners CAN override the permission requirements.
+            Permission(s) required to use the command. Inputting ``8`` or
+            ``Permissions(administrator=True)`` for example will only allow
+            Administrators to use the command. If set to 0, nobody will be able to use it
+            by default. Server owners CAN override the permission requirements.
         nsfw: :class:`bool`
-            Whether the command can only be used in age-restricted channels. Defaults to ``False``.
+            Whether the command can only be used in age-restricted channels.
+            Defaults to ``False``.
 
             .. versionadded:: 2.4
         force_global: :class:`bool`
-            If True, will force this command to register as a global command, even if ``guild_ids`` is set. Will still
-            register to guilds. Has no effect if ``guild_ids`` are never set or added to.
+            If True, will force this command to register as a global command,
+            even if ``guild_ids`` is set. Will still register to guilds.
+            Has no effect if ``guild_ids`` are never set or added to.
         """
 
         def decorator(func: Callable):
@@ -2737,9 +2809,12 @@ class Client:
 
         .. note::
 
-            This does not include role or channel mentions. See :meth:`Guild.parse_mentions <nextcord.Guild.parse_mentions>`
-            for :class:`~nextcord.Member` objects, :meth:`Guild.parse_role_mentions <nextcord.Guild.parse_role_mentions>`
-            for :class:`~nextcord.Role` objects, and :meth:`Guild.parse_channel_mentions <nextcord.Guild.parse_channel_mentions>`
+            This does not include role or channel mentions.
+            See :meth:`Guild.parse_mentions <nextcord.Guild.parse_mentions>`
+            for :class:`~nextcord.Member` objects,
+            :meth:`Guild.parse_role_mentions <nextcord.Guild.parse_role_mentions>`
+            for :class:`~nextcord.Role` objects, and
+            :meth:`Guild.parse_channel_mentions <nextcord.Guild.parse_channel_mentions>`
             for :class:`~nextcord.abc.GuildChannel` objects.
 
         .. note::

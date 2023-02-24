@@ -359,7 +359,9 @@ class Command(_BaseCommand, Generic[CogT, P, T]):
 
         # bandaid for the fact that sometimes parent can be the bot instance
         parent = kwargs.get("parent")
-        self.parent: Optional[GroupMixin] = parent if isinstance(parent, _BaseCommand) else None  # type: ignore
+        self.parent: Optional[GroupMixin] = (
+            parent if isinstance(parent, _BaseCommand) else None
+        )  # type: ignore
 
         self._before_invoke: Optional[Hook] = None
         try:
@@ -1057,7 +1059,10 @@ class Command(_BaseCommand, Generic[CogT, P, T]):
         return ""
 
     def _is_typing_optional(self, annotation: Union[T, Optional[T]]) -> TypeGuard[Optional[T]]:
-        return getattr(annotation, "__origin__", None) is Union and type(None) in annotation.__args__  # type: ignore
+        return (
+            getattr(annotation, "__origin__", None) is Union
+            and type(None) in annotation.__args__  # type: ignore
+        )
 
     @property
     def signature(self) -> str:
@@ -1074,7 +1079,8 @@ class Command(_BaseCommand, Generic[CogT, P, T]):
             greedy = isinstance(param.annotation, Greedy)
             optional = False  # postpone evaluation of if it's an optional argument
 
-            # for typing.Literal[...], typing.Optional[typing.Literal[...]], and Greedy[typing.Literal[...]], the
+            # for typing.Literal[...], typing.Optional[typing.Literal[...]],
+            # and Greedy[typing.Literal[...]], the
             # parameter signature is a literal list of it's values
             annotation = param.annotation.converter if greedy else param.annotation
             origin = getattr(annotation, "__origin__", None)
@@ -1172,7 +1178,9 @@ class Command(_BaseCommand, Generic[CogT, P, T]):
                 # since we have no checks, then we just return True.
                 return True
 
-            return await nextcord.utils.async_all(predicate(ctx) for predicate in predicates)  # type: ignore
+            return await nextcord.utils.async_all(
+                predicate(ctx) for predicate in predicates  # type: ignore
+            )
         finally:
             ctx.command = original
 
@@ -1379,7 +1387,8 @@ class GroupMixin(Generic[CogT]):
         Returns
         -------
         Callable[..., :class:`Command`]
-            A decorator that converts the provided method into a Command, adds it to the bot, then returns it.
+            A decorator that converts the provided method into a Command, adds it to the bot,
+            then returns it.
         """
 
         def decorator(func: Callable[Concatenate[ContextT, P], Coro[Any]]) -> CommandT:
@@ -1432,7 +1441,8 @@ class GroupMixin(Generic[CogT]):
         Returns
         -------
         Callable[..., :class:`Group`]
-            A decorator that converts the provided method into a Group, adds it to the bot, then returns it.
+            A decorator that converts the provided method into a Group,
+            adds it to the bot, then returns it.
         """
 
         def decorator(func: Callable[Concatenate[ContextT, P], Coro[Any]]) -> GroupT:

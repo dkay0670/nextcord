@@ -154,12 +154,13 @@ class Permissions(BaseFlags):
         - :attr:`administrator`
 
         .. versionchanged:: 1.7
-           Added :attr:`stream`, :attr:`priority_speaker` and :attr:`use_slash_commands` permissions.
+           Added :attr:`stream`, :attr:`priority_speaker`
+           and :attr:`use_slash_commands` permissions.
 
         .. versionchanged:: 2.0
-           Added :attr:`create_public_threads`, :attr:`create_private_threads`, :attr:`manage_threads`,
-           :attr:`use_external_stickers`, :attr:`send_messages_in_threads` and
-           :attr:`request_to_speak` permissions.
+           Added :attr:`create_public_threads`, :attr:`create_private_threads`,
+           :attr:`manage_threads`, :attr:`use_external_stickers`,
+           :attr:`send_messages_in_threads` and :attr:`request_to_speak` permissions.
         """
         return cls(0b111110110110011111101111111111101010001)
 
@@ -195,8 +196,9 @@ class Permissions(BaseFlags):
            Added :attr:`use_slash_commands` permission.
 
         .. versionchanged:: 2.0
-           Added :attr:`create_public_threads`, :attr:`create_private_threads`, :attr:`manage_threads`,
-           :attr:`send_messages_in_threads` and :attr:`use_external_stickers` permissions.
+           Added :attr:`create_public_threads`, :attr:`create_private_threads`,
+           :attr:`manage_threads`, :attr:`send_messages_in_threads`
+           and :attr:`use_external_stickers` permissions.
         """
         return cls(0b111110010000000000001111111100001000000)
 
@@ -281,8 +283,9 @@ class Permissions(BaseFlags):
 
     @flag_value
     def administrator(self) -> int:
-        """:class:`bool`: Returns ``True`` if a user is an administrator. This role overrides all other permissions.
+        """:class:`bool`: Returns ``True`` if a user is an administrator.
 
+        This role overrides all other permissions.
         This also bypasses all channel-specific overrides.
         """
         return 1 << 3
@@ -291,7 +294,8 @@ class Permissions(BaseFlags):
     def manage_channels(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can edit, delete, or create channels in the guild.
 
-        This also corresponds to the "Manage Channel" channel-specific override."""
+        This also corresponds to the "Manage Channel" channel-specific override.
+        """  # noqa: E501
         return 1 << 4
 
     @flag_value
@@ -321,7 +325,7 @@ class Permissions(BaseFlags):
 
     @flag_value
     def read_messages(self) -> int:
-        """:class:`bool`: Returns ``True`` if a user can read messages from all or specific text channels."""
+        """:class:`bool`: Returns ``True`` if a user can read messages from all or specific text channels."""  # noqa: E501
         return 1 << 10
 
     @make_permission_alias("read_messages")
@@ -334,12 +338,12 @@ class Permissions(BaseFlags):
 
     @flag_value
     def send_messages(self) -> int:
-        """:class:`bool`: Returns ``True`` if a user can send messages from all or specific text channels."""
+        """:class:`bool`: Returns ``True`` if a user can send messages from all or specific text channels."""  # noqa: E501
         return 1 << 11
 
     @flag_value
     def send_tts_messages(self) -> int:
-        """:class:`bool`: Returns ``True`` if a user can send TTS messages from all or specific text channels."""
+        """:class:`bool`: Returns ``True`` if a user can send TTS messages from all or specific text channels."""  # noqa: E501
         return 1 << 12
 
     @flag_value
@@ -354,7 +358,7 @@ class Permissions(BaseFlags):
 
     @flag_value
     def embed_links(self) -> int:
-        """:class:`bool`: Returns ``True`` if a user's messages will automatically be embedded by Discord."""
+        """:class:`bool`: Returns ``True`` if a user's messages can be embedded."""
         return 1 << 14
 
     @flag_value
@@ -369,7 +373,7 @@ class Permissions(BaseFlags):
 
     @flag_value
     def mention_everyone(self) -> int:
-        """:class:`bool`: Returns ``True`` if a user's @everyone or @here will mention everyone in the text channel."""
+        """:class:`bool`: Returns ``True`` if a user's @everyone or @here will mention everyone in the text channel."""  # noqa: E501
         return 1 << 17
 
     @flag_value
@@ -430,12 +434,12 @@ class Permissions(BaseFlags):
 
     @flag_value
     def manage_nicknames(self) -> int:
-        """:class:`bool`: Returns ``True`` if a user can change other user's nickname in the guild."""
+        """:class:`bool`: Returns ``True`` if a user can change other user's nicknames."""
         return 1 << 27
 
     @flag_value
     def manage_roles(self) -> int:
-        """:class:`bool`: Returns ``True`` if a user can create or edit roles less than their role's position.
+        """:class:`bool`: Returns ``True`` if a user can create or edit roles below them.
 
         This also corresponds to the "Manage Permissions" channel-specific override.
         """
@@ -694,7 +698,7 @@ class PermissionOverwrite:
             self._values[key] = value
 
     def pair(self) -> Tuple[Permissions, Permissions]:
-        """Tuple[:class:`Permissions`, :class:`Permissions`]: Returns the (allow, deny) pair from this overwrite."""
+        """Tuple[:class:`Permissions`, :class:`Permissions`]: Returns the (allow, deny) pair from this overwrite."""  # noqa: E501
 
         allow = Permissions.none()
         deny = Permissions.none()

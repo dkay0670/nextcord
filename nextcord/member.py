@@ -207,8 +207,9 @@ class Member(abc.Messageable, _UserTag):
     Attributes
     ----------
     joined_at: Optional[:class:`datetime.datetime`]
-        An aware datetime object that specifies the date and time in UTC that the member joined the guild.
-        If the member left and rejoined the guild, this will be the latest date. In certain cases, this can be ``None``.
+        An aware datetime object that specifies the date and time in UTC
+        that the member joined the guild. If the member left and rejoined the guild,
+        this will be the latest date. In certain cases, this can be ``None``.
     activities: Tuple[Union[:class:`BaseActivity`, :class:`Spotify`]]
         The activities that the user is currently doing.
 
@@ -288,8 +289,9 @@ class Member(abc.Messageable, _UserTag):
 
     def __repr__(self) -> str:
         return (
-            f"<Member id={self._user.id} name={self._user.name!r} discriminator={self._user.discriminator!r}"
-            f" bot={self._user.bot} nick={self.nick!r} guild={self.guild!r}>"
+            f"<Member id={self._user.id} name={self._user.name!r} "
+            f"discriminator={self._user.discriminator!r} bot={self._user.bot} "
+            f"nick={self.nick!r} guild={self.guild!r}>"
         )
 
     def __eq__(self, other: Any) -> bool:
@@ -376,7 +378,8 @@ class Member(abc.Messageable, _UserTag):
     ) -> Optional[Tuple[User, User]]:
         self.activities = tuple(map(lambda x: create_activity(self._state, x), data["activities"]))
         self._client_status = {
-            sys.intern(key): sys.intern(value) for key, value in data.get("client_status", {}).items()  # type: ignore
+            sys.intern(key): sys.intern(value)  # type: ignore
+            for key, value in data.get("client_status", {}).items()
         }
         self._client_status[None] = sys.intern(data["status"])
 
@@ -402,7 +405,10 @@ class Member(abc.Messageable, _UserTag):
 
     @property
     def status(self) -> Union[Status, str]:
-        """Union[:class:`Status`, :class:`str`]: The member's overall status. If the value is unknown, then it will be a :class:`str` instead."""
+        """Union[:class:`Status`, :class:`str`]: The member's overall status.
+
+        If the value is unknown, then it will be a :class:`str` instead.
+        """
         return try_enum(Status, self._client_status[None])
 
     @property
@@ -434,7 +440,7 @@ class Member(abc.Messageable, _UserTag):
         return try_enum(Status, self._client_status.get("web", "offline"))
 
     def is_on_mobile(self) -> bool:
-        """:class:`bool`: A helper function that determines if a member is active on a mobile device."""
+        """:class:`bool`: A helper function that determines if a member is active on a mobile device."""  # noqa: E501
         return "mobile" in self._client_status
 
     @property
@@ -459,8 +465,8 @@ class Member(abc.Messageable, _UserTag):
     @property
     def color(self) -> Colour:
         """:class:`Colour`: A property that returns a color denoting the rendered color for
-        the member. If the default color is the one rendered then an instance of :meth:`Colour.default`
-        is returned.
+        the member. If the default color is the one rendered then an instance of
+        :meth:`Colour.default` is returned.
 
         There is an alias for this named :attr:`colour`.
         """

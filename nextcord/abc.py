@@ -354,8 +354,9 @@ class GuildChannel:
                         ]
                 options["parent_id"] = parent_id
             elif lock_permissions and self.category_id is not None:
-                # if we're syncing permissions on a pre-existing channel category without changing it
-                # we need to update the permissions to point to the pre-existing category
+                # if we're syncing permissions on a pre-existing channel category
+                # without changing it we need to update the permissions to point
+                # to the pre-existing category
                 category = self.guild.get_channel(self.category_id)
                 if category:
                     options["permission_overwrites"] = [c._asdict() for c in category._overwrites]
@@ -502,19 +503,11 @@ class GuildChannel:
         predicate: Callable[[_Overwrites], bool]
 
         if isinstance(obj, User):
-
-            def predicate(p):
-                return p.is_member()
-
+            predicate = lambda p: p.is_member()  # noqa: E731
         elif isinstance(obj, Role):
-
-            def predicate(p):
-                return p.is_role()
-
+            predicate = lambda p: p.is_role()  # noqa: E731
         else:
-
-            def predicate(p) -> bool:
-                return True
+            predicate = lambda p: True  # noqa: E731
 
         for overwrite in filter(predicate, self._overwrites):
             if overwrite.id == obj.id:
@@ -536,7 +529,7 @@ class GuildChannel:
         -------
         Dict[Union[:class:`~nextcord.Role`, :class:`~nextcord.Member`], :class:`~nextcord.PermissionOverwrite`]
             The channel's permission overwrites.
-        """
+        """  # noqa: E501
         ret = {}
         for ow in self._overwrites:
             allow = Permissions(ow.allow)
@@ -727,7 +720,8 @@ class GuildChannel:
             denied = Permissions.all_channel()
             base.value &= ~denied.value
 
-        # if you are timed out then you lose all permissions except view_channel and read_message_history
+        # if you are timed out then you lose all permissions except
+        # view_channel and read_message_history
         if obj.communication_disabled_until is not None:
             allowed = Permissions(view_channel=True, read_message_history=True)
             base.value &= allowed.value
@@ -1387,22 +1381,26 @@ class Messageable:
             Controls the mentions being processed in this message. If this is
             passed, then the object is merged with :attr:`~nextcord.Client.allowed_mentions`.
             The merging behaviour only overrides attributes that have been explicitly passed
-            to the object, otherwise it uses the attributes set in :attr:`~nextcord.Client.allowed_mentions`.
-            If no object is passed at all then the defaults given by :attr:`~nextcord.Client.allowed_mentions`
-            are used instead.
+            to the object, otherwise it uses the attributes set in
+            :attr:`~nextcord.Client.allowed_mentions`. If no object is passed at all then
+            the defaults given by :attr:`~nextcord.Client.allowed_mentions` are used instead.
 
             .. versionadded:: 1.4
 
         reference: Union[:class:`~nextcord.Message`, :class:`~nextcord.MessageReference`, :class:`~nextcord.PartialMessage`]
-            A reference to the :class:`~nextcord.Message` to which you are replying, this can be created using
-            :meth:`~nextcord.Message.to_reference` or passed directly as a :class:`~nextcord.Message`. You can control
-            whether this mentions the author of the referenced message using the :attr:`~nextcord.AllowedMentions.replied_user`
-            attribute of ``allowed_mentions`` or by setting ``mention_author``.
+            A reference to the :class:`~nextcord.Message` to which you are replying,
+            this can be created using
+            :meth:`~nextcord.Message.to_reference` or passed directly as a
+            :class:`~nextcord.Message`. You can control whether this mentions
+            the author of the referenced message using the
+            :attr:`~nextcord.AllowedMentions.replied_user` attribute of
+            ``allowed_mentions`` or by setting ``mention_author``.
 
             .. versionadded:: 1.6
 
         mention_author: Optional[:class:`bool`]
-            If set, overrides the :attr:`~nextcord.AllowedMentions.replied_user` attribute of ``allowed_mentions``.
+            If set, overrides the :attr:`~nextcord.AllowedMentions.replied_user`
+            attribute of ``allowed_mentions``.
 
             .. versionadded:: 1.6
         view: :class:`nextcord.ui.View`
@@ -1442,8 +1440,7 @@ class Messageable:
         -------
         :class:`~nextcord.Message`
             The message that was sent.
-        """
-
+        """  # noqa: E501
         channel = await self._get_channel()
         state = self._state
         content = str(content) if content is not None else None
@@ -1639,7 +1636,7 @@ class Messageable:
         around: Optional[SnowflakeTime] = None,
         oldest_first: Optional[bool] = None,
     ) -> HistoryIterator:
-        """Returns an :class:`~nextcord.AsyncIterator` that enables receiving the destination's message history.
+        """Returns an :class:`~nextcord.AsyncIterator` that enables fetching message history.
 
         You must have :attr:`~nextcord.Permissions.read_message_history` permissions to use this.
 
@@ -1712,8 +1709,8 @@ class Connectable(Protocol):
 
     Note
     ----
-    This ABC is not decorated with :func:`typing.runtime_checkable`, so will fail :func:`isinstance`/:func:`issubclass`
-    checks.
+    This ABC is not decorated with :func:`typing.runtime_checkable`,
+    so will fail :func:`isinstance`/:func:`issubclass` checks.
     """
 
     __slots__ = ()

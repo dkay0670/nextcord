@@ -71,7 +71,8 @@ class SelectBase(Item[V]):
 
     In order to get the selected items that the user has chosen, use :attr:`Select.values`.
 
-    .. warning:: This class is not meant to be instantiated by the user. In order to create a select menu, use :class:`Select` instead.
+    .. warning:: This class is not meant to be instantiated by the user.
+    In order to create a select menu, use :class:`Select` instead.
 
     .. versionadded:: 2.3
 
@@ -144,7 +145,7 @@ class SelectBase(Item[V]):
 
     @property
     def placeholder(self) -> Optional[str]:
-        """Optional[:class:`str`]: The placeholder text that is shown if nothing is selected, if any."""
+        """Optional[:class:`str`]: The placeholder text shown if nothing is selected, if any."""
         return self._underlying.placeholder
 
     @placeholder.setter

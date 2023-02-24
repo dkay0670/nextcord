@@ -383,7 +383,8 @@ class MessageConverter(IDConverter[nextcord.Message]):
     3. Lookup by message URL
 
     .. versionchanged:: 1.5
-         Raise :exc:`.ChannelNotFound`, :exc:`.MessageNotFound` or :exc:`.ChannelNotReadable` instead of generic :exc:`.BadArgument`
+        Raise :exc:`.ChannelNotFound`, :exc:`.MessageNotFound` or :exc:`.ChannelNotReadable`
+        instead of generic :exc:`.BadArgument`
     """
 
     async def convert(self, ctx: Context, argument: str) -> nextcord.Message:
@@ -947,7 +948,8 @@ class clean_content(Converter[str]):
     escape_markdown: :class:`bool`
         Whether to also escape special markdown characters.
     remove_markdown: :class:`bool`
-        Whether to also remove special markdown characters. This option is not supported with ``escape_markdown``
+        Whether to also remove special markdown characters. This option is not supported with
+        ``escape_markdown``
 
         .. versionadded:: 1.7
     """

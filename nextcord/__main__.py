@@ -63,7 +63,7 @@ bot = Bot()
 # write general commands here
 
 bot.run(config.token)
-"""
+"""  # noqa: E501
 
 _gitignore_template = """# Byte-compiled / optimized / DLL files
 __pycache__/

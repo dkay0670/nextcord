@@ -92,9 +92,9 @@ class Embed:
     casted to :class:`str` for you.
 
     .. versionchanged:: 2.2
-        ``Embed.Empty`` is now an alias for ``None`` for a non-breaking change, every field uses ``None``
-            and is typed as ``Optional[...]`` over ``Embed.Empty``.
-            This also means that you can no longer use ``len()`` on an empty field.
+        ``Embed.Empty`` is now an alias for ``None`` for a non-breaking change,
+        every field uses ``None`` and is typed as ``Optional[...]`` over ``Embed.Empty``.
+        This also means that you can no longer use ``len()`` on an empty field.
 
     Attributes
     ----------
@@ -289,7 +289,8 @@ class Embed:
             self._colour = Colour(value=value)
         else:
             raise TypeError(
-                f"Expected nextcord.Colour, int, or None but received {value.__class__.__name__} instead."
+                "Expected nextcord.Colour, int, or None but received "
+                f"{value.__class__.__name__} instead."
             )
 
     color = colour
@@ -533,7 +534,7 @@ class Embed:
         See :meth:`add_field` for possible values you can access.
 
         If the attribute has no value then ``None`` is returned.
-        """
+        """  # noqa: E501
         return [EmbedProxy(d) for d in getattr(self, "_fields", [])]  # type: ignore
 
     def add_field(self, *, name: Any, value: Any, inline: bool = True) -> Self:

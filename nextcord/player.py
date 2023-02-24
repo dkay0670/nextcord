@@ -422,7 +422,8 @@ class FFmpegOpusAudio(FFmpegAudio):
         Examples
         --------
 
-        Use this function to create an :class:`FFmpegOpusAudio` instance instead of the constructor: ::
+        Use this function to create an :class:`FFmpegOpusAudio` instance
+        instead of the constructor: ::
 
             source = await nextcord.FFmpegOpusAudio.from_probe("song.webm")
             voice_client.play(source)

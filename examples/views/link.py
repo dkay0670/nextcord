@@ -9,7 +9,8 @@ from nextcord.ext import commands
 class Google(nextcord.ui.View):
     def __init__(self, query: str):
         super().__init__()
-        # We need to quote the query string to make a valid URL. Discord will raise an error if it isn't valid.
+        # We need to quote the query string to make a valid URL.
+        # Discord will raise an error if it isn't valid.
         query = quote_plus(query)
         url = f"https://www.google.com/search?q={query}"
 

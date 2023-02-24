@@ -114,7 +114,7 @@ class ChannelSelect(SelectBase, Generic[V]):
 
     @property
     def values(self) -> ChannelSelectValues:
-        """:class:`.ui.ChannelSelectValues`: A list of resolved :class:`.abc.GuildChannel` that have been selected by the user."""
+        """:class:`.ui.ChannelSelectValues`: A list of resolved :class:`.abc.GuildChannel` selected by the user."""  # noqa: E501
         return self._selected_values
 
     def to_component_dict(self) -> ChannelSelectMenuPayload:

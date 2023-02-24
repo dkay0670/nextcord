@@ -99,7 +99,7 @@ class VoiceProtocol:
         data: :class:`dict`
             The raw `voice state payload`__.
 
-            .. _voice_state_update_payload: https://discord.com/developers/docs/resources/voice#voice-state-object
+            .. _voice_state_update_payload: https://discord.dev/resources/voice#voice-state-object
 
             __ voice_state_update_payload_
         """
@@ -116,10 +116,10 @@ class VoiceProtocol:
         data: :class:`dict`
             The raw `voice server update payload`__.
 
-            .. _voice_server_update_payload: https://discord.com/developers/docs/topics/gateway#voice-server-update-voice-server-update-event-fields
+            .. _voice_server_update_payload: https://discord.dev/topics/gateway#voice-server-update-voice-server-update-event-fields
 
             __ voice_server_update_payload_
-        """
+        """  # noqa: E501
         raise NotImplementedError
 
     async def connect(self, *, timeout: float, reconnect: bool) -> None:
@@ -275,7 +275,9 @@ class VoiceClient(VoiceProtocol):
                 await self.disconnect(force=True)
             else:
                 guild = self.guild
-                self.channel = channel_id and guild and guild.get_channel(int(channel_id))  # type: ignore
+                self.channel = (
+                    channel_id and guild and guild.get_channel(int(channel_id))
+                )  # type: ignore
         else:
             self._voice_state_complete.set()
 
@@ -307,17 +309,23 @@ class VoiceClient(VoiceProtocol):
         self.socket.setblocking(False)
 
         if not self._handshaking:
-            # If we're not handshaking then we need to terminate our previous connection in the websocket
+            # If we're not handshaking then we need to terminate our previous connection
+            # in the websocket
             await self.ws.close(4000)
             return
 
         self._voice_server_complete.set()
 
     async def voice_connect(self) -> None:
-        await self.channel.guild.change_voice_state(channel=self.channel)  # type: ignore # FIXME: protocol should be fixed for guild
+        # FIXME: protocol should be fixed for guild
+        await self.channel.guild.change_voice_state(channel=self.channel)  # type: ignore
 
     async def voice_disconnect(self) -> None:
-        _log.info("The voice handshake is being terminated for Channel ID %s (Guild ID %s)", self.channel.id, self.guild.id)  # type: ignore
+        _log.info(
+            "The voice handshake is being terminated for Channel ID %s (Guild ID %s)",
+            self.channel.id,  # type: ignore
+            self.guild.id,  # type: ignore
+        )
         await self.channel.guild.change_voice_state(channel=None)  # type: ignore
 
     def prepare_handshake(self) -> None:
@@ -386,7 +394,8 @@ class VoiceClient(VoiceProtocol):
         self.prepare_handshake()
         self._potentially_reconnecting = True
         try:
-            # We only care about VOICE_SERVER_UPDATE since VOICE_STATE_UPDATE can come before we get disconnected
+            # We only care about VOICE_SERVER_UPDATE
+            # since VOICE_STATE_UPDATE can come before we get disconnected
             await asyncio.wait_for(self._voice_server_complete.wait(), timeout=self.timeout)
         except asyncio.TimeoutError:
             self._potentially_reconnecting = False
@@ -497,7 +506,8 @@ class VoiceClient(VoiceProtocol):
         channel: :class:`abc.Snowflake`
             The channel to move to. Must be a voice channel.
         """
-        await self.channel.guild.change_voice_state(channel=channel)  # type: ignore # still protocol issue
+        # still protocol issue
+        await self.channel.guild.change_voice_state(channel=channel)  # type: ignore
 
     def is_connected(self) -> bool:
         """Indicates if the voice client is connected to voice."""

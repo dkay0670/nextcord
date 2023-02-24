@@ -111,7 +111,7 @@ class UserSelect(SelectBase, Generic[V]):
 
     @property
     def values(self) -> UserSelectValues:
-        """:class:`.ui.UserSelectValues`: A list of Union[:class:`.Member`, :class:`.User`] that have been selected by the user."""
+        """:class:`.ui.UserSelectValues`: A list of Union[:class:`.Member`, :class:`.User`] selected by the user."""  # noqa: E501
         return self._selected_values
 
     def to_component_dict(self) -> UserSelectMenuPayload:

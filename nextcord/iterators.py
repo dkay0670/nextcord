@@ -309,7 +309,9 @@ class HistoryIterator(_AsyncIterator["Message"]):
             self._retrieve_messages = self._retrieve_messages_around_strategy
             if self.before and self.after:
                 # lambda type ignores are as before/after/around are optional but exist here
-                self._filter = lambda m: self.after.id < int(m["id"]) < self.before.id  # type: ignore
+                self._filter = (
+                    lambda m: self.after.id < int(m["id"]) < self.before.id  # type: ignore
+                )
             elif self.before:
                 self._filter = lambda m: int(m["id"]) < self.before.id  # type: ignore
             elif self.after:
@@ -334,13 +336,13 @@ class HistoryIterator(_AsyncIterator["Message"]):
             raise NoMoreItems()
 
     def _get_retrieve(self):
-        l = self.limit
-        if l is None or l > 100:
-            r = 100
+        limit = self.limit
+        if limit is None or limit > 100:
+            retrieve = 100
         else:
-            r = l
-        self.retrieve = r
-        return r > 0
+            retrieve = limit
+        self.retrieve = retrieve
+        return retrieve > 0
 
     async def fill_messages(self) -> None:
         if not hasattr(self, "channel"):
@@ -561,13 +563,13 @@ class AuditLogIterator(_AsyncIterator["AuditLogEntry"]):
             raise NoMoreItems()
 
     def _get_retrieve(self):
-        l = self.limit
-        if l is None or l > 100:
-            r = 100
+        limit = self.limit
+        if limit is None or limit > 100:
+            retrieve = 100
         else:
-            r = l
-        self.retrieve = r
-        return r > 0
+            retrieve = limit
+        self.retrieve = retrieve
+        return retrieve > 0
 
     async def _fill(self) -> None:
         if self._get_retrieve():
@@ -675,13 +677,13 @@ class GuildIterator(_AsyncIterator["Guild"]):
             raise NoMoreItems()
 
     def _get_retrieve(self):
-        l = self.limit
-        if l is None or l > 200:
-            r = 200
+        limit = self.limit
+        if limit is None or limit > 200:
+            retrieve = 200
         else:
-            r = l
-        self.retrieve = r
-        return r > 0
+            retrieve = limit
+        self.retrieve = retrieve
+        return retrieve > 0
 
     def create_guild(self, data: GuildPayload) -> Guild:
         from .guild import Guild
@@ -755,13 +757,13 @@ class MemberIterator(_AsyncIterator["Member"]):
             raise NoMoreItems()
 
     def _get_retrieve(self):
-        l = self.limit
-        if l is None or l > 1000:
-            r = 1000
+        limit = self.limit
+        if limit is None or limit > 1000:
+            retrieve = 1000
         else:
-            r = l
-        self.retrieve = r
-        return r > 0
+            retrieve = limit
+        self.retrieve = retrieve
+        return retrieve > 0
 
     async def fill_members(self) -> None:
         if self._get_retrieve():

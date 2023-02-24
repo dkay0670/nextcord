@@ -146,7 +146,8 @@ class Template:
     def __repr__(self) -> str:
         return (
             f"<Template code={self.code!r} uses={self.uses} name={self.name!r}"
-            f" creator={self.creator!r} source_guild={self.source_guild!r} is_dirty={self.is_dirty}>"
+            f" creator={self.creator!r} source_guild={self.source_guild!r} "
+            f"is_dirty={self.is_dirty}>"
         )
 
     async def create_guild(
@@ -162,7 +163,8 @@ class Template:
         Bot accounts in more than 10 guilds are not allowed to create guilds.
 
         .. versionchanged:: 2.1
-            The ``icon`` parameter now accepts :class:`File`, :class:`Attachment`, and :class:`Asset`.
+            The ``icon`` parameter now accepts :class:`File`,
+            :class:`Attachment`, and :class:`Asset`.
 
         Parameters
         ----------
@@ -173,7 +175,8 @@ class Template:
             Defaults to :attr:`.VoiceRegion.us_west`.
         icon: Optional[Union[:class:`bytes`, :class:`Asset`, :class:`Attachment`, :class:`File`]]
             The :term:`py:bytes-like object`, :class:`File`, :class:`Attachment`, or :class:`Asset`
-            representing the icon. See :meth:`.ClientUser.edit` for more details on what is expected.
+            representing the icon. See :meth:`.ClientUser.edit`
+            for more details on what is expected.
 
         Raises
         ------

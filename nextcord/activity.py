@@ -254,7 +254,7 @@ class Activity(BaseActivity):
 
     @property
     def start(self) -> Optional[datetime.datetime]:
-        """Optional[:class:`datetime.datetime`]: When the user started doing this activity in UTC, if applicable."""
+        """Optional[:class:`datetime.datetime`]: When the user started doing this activity in UTC, if applicable."""  # noqa: E501
         try:
             timestamp = self.timestamps["start"] / 1000
         except KeyError:
@@ -264,7 +264,7 @@ class Activity(BaseActivity):
 
     @property
     def end(self) -> Optional[datetime.datetime]:
-        """Optional[:class:`datetime.datetime`]: When the user will stop doing this activity in UTC, if applicable."""
+        """Optional[:class:`datetime.datetime`]: When the user will stop doing this activity in UTC, if applicable."""  # noqa: E501
         try:
             timestamp = self.timestamps["end"] / 1000
         except KeyError:
@@ -274,7 +274,7 @@ class Activity(BaseActivity):
 
     @property
     def large_image_url(self) -> Optional[str]:
-        """Optional[:class:`str`]: Returns a URL pointing to the large image asset of this activity if applicable."""
+        """Optional[:class:`str`]: Returns a URL pointing to the large image asset of this activity if applicable."""  # noqa: E501
         if self.application_id is None:
             return None
 
@@ -287,7 +287,7 @@ class Activity(BaseActivity):
 
     @property
     def small_image_url(self) -> Optional[str]:
-        """Optional[:class:`str`]: Returns a URL pointing to the small image asset of this activity if applicable."""
+        """Optional[:class:`str`]: Returns a URL pointing to the small image asset of this activity if applicable."""  # noqa: E501
         if self.application_id is None:
             return None
 
@@ -300,12 +300,12 @@ class Activity(BaseActivity):
 
     @property
     def large_image_text(self) -> Optional[str]:
-        """Optional[:class:`str`]: Returns the large image asset hover text of this activity if applicable."""
+        """Optional[:class:`str`]: Returns the large image asset hover text of this activity if applicable."""  # noqa: E501
         return self.assets.get("large_text", None)
 
     @property
     def small_image_text(self) -> Optional[str]:
-        """Optional[:class:`str`]: Returns the small image asset hover text of this activity if applicable."""
+        """Optional[:class:`str`]: Returns the small image asset hover text of this activity if applicable."""  # noqa: E501
         return self.assets.get("small_text", None)
 
 
@@ -360,22 +360,23 @@ class Game(BaseActivity):
 
     @property
     def type(self) -> ActivityType:
-        """:class:`ActivityType`: Returns the game's type. This is for compatibility with :class:`Activity`.
+        """:class:`ActivityType`: Returns the game's type.
 
+        This is for compatibility with :class:`Activity`.
         It always returns :attr:`ActivityType.playing`.
         """
         return ActivityType.playing
 
     @property
     def start(self) -> Optional[datetime.datetime]:
-        """Optional[:class:`datetime.datetime`]: When the user started playing this game in UTC, if applicable."""
+        """Optional[:class:`datetime.datetime`]: When the user started playing this game in UTC, if applicable."""  # noqa: E501
         if self._start:
             return datetime.datetime.fromtimestamp(self._start / 1000, tz=datetime.timezone.utc)
         return None
 
     @property
     def end(self) -> Optional[datetime.datetime]:
-        """Optional[:class:`datetime.datetime`]: When the user will stop playing this game in UTC, if applicable."""
+        """Optional[:class:`datetime.datetime`]: When the user will stop playing this game in UTC, if applicable."""  # noqa: E501
         if self._end:
             return datetime.datetime.fromtimestamp(self._end / 1000, tz=datetime.timezone.utc)
         return None
@@ -470,8 +471,9 @@ class Streaming(BaseActivity):
 
     @property
     def type(self) -> ActivityType:
-        """:class:`ActivityType`: Returns the game's type. This is for compatibility with :class:`Activity`.
+        """:class:`ActivityType`: Returns the game's type.
 
+        This is for compatibility with :class:`Activity`.
         It always returns :attr:`ActivityType.streaming`.
         """
         return ActivityType.streaming
@@ -566,8 +568,9 @@ class Spotify:
 
     @property
     def type(self) -> ActivityType:
-        """:class:`ActivityType`: Returns the activity's type. This is for compatibility with :class:`Activity`.
+        """:class:`ActivityType`: Returns the activity's type.
 
+        This is for compatibility with :class:`Activity`.
         It always returns :attr:`ActivityType.listening`.
         """
         return ActivityType.listening
@@ -773,8 +776,9 @@ class CustomActivity(BaseActivity):
 
     @property
     def type(self) -> ActivityType:
-        """:class:`ActivityType`: Returns the activity's type. This is for compatibility with :class:`Activity`.
+        """:class:`ActivityType`: Returns the activity's type.
 
+        This is for compatibility with :class:`Activity`.
         It always returns :attr:`ActivityType.custom`.
         """
         return ActivityType.custom

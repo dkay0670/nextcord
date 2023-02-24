@@ -201,7 +201,7 @@ class PartialEmoji(_EmojiTag, AssetMixin):
         """Optional[:class:`datetime.datetime`]: Returns the emoji's creation time in UTC, or None if Unicode emoji.
 
         .. versionadded:: 1.6
-        """
+        """  # noqa: E501
         if self.id is None:
             return None
 

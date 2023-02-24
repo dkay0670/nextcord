@@ -124,10 +124,18 @@ class ScheduledEventUser(Hashable):
                         member["id"]  # type: ignore # (handled below)
                     )
                 except KeyError:
-                    m = Member(data=member, guild=self.event.guild, state=self._state)  # type: ignore
+                    m = Member(
+                        data=member,  # type: ignore
+                        guild=self.event.guild,
+                        state=self._state,
+                    )
                     self.member: Optional[Member] = m
             else:
-                m = Member(data=member, guild=self.event.guild, state=self._state)  # type: ignore
+                m = Member(
+                    data=member,  # type: ignore
+                    guild=self.event.guild,
+                    state=self._state,
+                )
                 self.member: Optional[Member] = m
         else:
             self.member: Optional[Member] = None
@@ -321,7 +329,8 @@ class ScheduledEvent(Hashable):
         Edit the scheduled event.
 
         .. versionchanged:: 2.1
-            The ``image`` parameter now accepts :class:`File`, :class:`Attachment`, and :class:`Asset`.
+            The ``image`` parameter now accepts :class:`File`, :class:`Attachment`,
+            and :class:`Asset`.
 
         Parameters
         ----------

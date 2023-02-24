@@ -143,7 +143,8 @@ class TextChannel(abc.Messageable, abc.GuildChannel, Hashable, PinsMixin):
 
         .. note::
 
-            To check if the channel or the guild of that channel are marked as NSFW, consider :meth:`is_nsfw` instead.
+            To check if the channel or the guild of that channel are marked as NSFW,
+            consider :meth:`is_nsfw` instead.
     default_auto_archive_duration: :class:`int`
         The default auto archive duration in minutes for threads created in this channel.
 
@@ -500,9 +501,7 @@ class TextChannel(abc.Messageable, abc.GuildChannel, Hashable, PinsMixin):
         """
 
         if check is MISSING:
-
-            def check(m) -> bool:
-                return True
+            check = lambda m: True  # noqa: E731
 
         iterator = self.history(
             limit=limit, before=before, after=after, oldest_first=oldest_first, around=around
@@ -588,7 +587,8 @@ class TextChannel(abc.Messageable, abc.GuildChannel, Hashable, PinsMixin):
             Added the ``reason`` keyword-only parameter.
 
         .. versionchanged:: 2.1
-            The ``avatar`` parameter now accepts :class:`File`, :class:`Attachment`, and :class:`Asset`.
+            The ``avatar`` parameter now accepts :class:`File`, :class:`Attachment`,
+            and :class:`Asset`.
 
         Parameters
         ----------
@@ -724,8 +724,9 @@ class TextChannel(abc.Messageable, abc.GuildChannel, Hashable, PinsMixin):
 
         Creates a thread in this text channel.
 
-        To create a public thread, you must have :attr:`~nextcord.Permissions.create_public_threads`.
-        For a private thread, :attr:`~nextcord.Permissions.create_private_threads` is needed instead.
+        To create a public thread, you must have
+        :attr:`~nextcord.Permissions.create_public_threads`. For a private thread,
+        :attr:`~nextcord.Permissions.create_private_threads` is needed instead.
 
         .. versionadded:: 2.0
 
@@ -792,8 +793,9 @@ class TextChannel(abc.Messageable, abc.GuildChannel, Hashable, PinsMixin):
     ) -> ArchivedThreadIterator:
         """Returns an :class:`~nextcord.AsyncIterator` that iterates over all archived threads in the guild.
 
-        You must have :attr:`~Permissions.read_message_history` to use this. If iterating over private threads
-        then :attr:`~Permissions.manage_threads` is also required.
+        You must have :attr:`~Permissions.read_message_history` to use this.
+        If iterating over private threads then :attr:`~Permissions.manage_threads`
+        is also required.
 
         .. versionadded:: 2.0
 
@@ -828,8 +830,7 @@ class TextChannel(abc.Messageable, abc.GuildChannel, Hashable, PinsMixin):
         ------
         :class:`Thread`
             The archived threads.
-        """
-
+        """  # noqa: E501
         return ArchivedThreadIterator(
             self.id, self.guild, limit=limit, joined=joined, private=private, before=before
         )
@@ -869,7 +870,8 @@ class ForumChannel(abc.GuildChannel, Hashable):
     category_id: Optional[:class:`int`]
         The ID of the :class:`CategoryChannel` this channel belongs to, if any.
     topic: :class:`str`
-        The topic of this channel, if any. This is what is shown in the "Guidelines" section visually.
+        The topic of this channel, if any. This is what is shown in the
+        "Guidelines" section visually.
     position: :class:`int`
         The position in the channel list, where the first channel is ``0``.
     nsfw: :class:`bool`
@@ -1237,8 +1239,9 @@ class ForumChannel(abc.GuildChannel, Hashable):
             Controls the mentions being processed in this message. If this is
             passed, then the object is merged with :attr:`~nextcord.Client.allowed_mentions`.
             The merging behaviour only overrides attributes that have been explicitly passed
-            to the object, otherwise it uses the attributes set in :attr:`~nextcord.Client.allowed_mentions`.
-            If no object is passed at all then the defaults given by :attr:`~nextcord.Client.allowed_mentions`
+            to the object, otherwise it uses the attributes set in
+            :attr:`~nextcord.Client.allowed_mentions`. If no object is passed at all
+            then the defaults given by :attr:`~nextcord.Client.allowed_mentions`
             are used instead.
         mention_author: Optional[:class:`bool`]
             Whether to mention the author of the message being replied to. Defaults to ``True``.
@@ -1271,7 +1274,7 @@ class ForumChannel(abc.GuildChannel, Hashable):
         -------
         :class:`Thread`
             The created thread.
-        """
+        """  # noqa: E501
         state = self._state
         content = str(content) if content is not None else None
 
@@ -1384,7 +1387,7 @@ class ForumChannel(abc.GuildChannel, Hashable):
         limit: Optional[int] = 50,
         before: Optional[Union[Snowflake, datetime.datetime]] = None,
     ) -> ArchivedThreadIterator:
-        """Returns an :class:`~nextcord.AsyncIterator` that iterates over all archived threads in the guild.
+        """Returns an :class:`~.AsyncIterator` that iterates over all archived threads in the guild.
 
         You must have :attr:`~Permissions.read_message_history` to use this.
         If iterating over private threads then :attr:`~Permissions.manage_threads` is also required.
@@ -1528,7 +1531,7 @@ class VocalGuildChannel(abc.Connectable, abc.GuildChannel, Hashable):
 
     @property
     def members(self) -> List[Member]:
-        """List[:class:`Member`]: Returns all members that are currently inside this voice channel."""
+        """List[:class:`Member`]: Returns all members that are currently inside this voice channel."""  # noqa: E501
         ret = []
         for user_id, state in self.guild._voice_states.items():
             if state.channel and state.channel.id == self.id:
@@ -1631,7 +1634,8 @@ class VoiceChannel(VocalGuildChannel, abc.Messageable):
 
         .. note::
 
-            To check if the channel or the guild of that channel are marked as NSFW, consider :meth:`is_nsfw` instead.
+            To check if the channel or the guild of that channel are marked as NSFW,
+            consider :meth:`is_nsfw` instead.
 
         .. versionadded:: 2.1
     flags: :class:`ChannelFlags`
@@ -1916,9 +1920,7 @@ class VoiceChannel(VocalGuildChannel, abc.Messageable):
         """
 
         if check is MISSING:
-
-            def check(m) -> bool:
-                return True
+            check = lambda m: True  # noqa: E731
 
         iterator = self.history(
             limit=limit, before=before, after=after, oldest_first=oldest_first, around=around
@@ -2091,7 +2093,7 @@ class StageChannel(VocalGuildChannel):
 
     @property
     def requesting_to_speak(self) -> List[Member]:
-        """List[:class:`Member`]: A list of members who are requesting to speak in the stage channel."""
+        """List[:class:`Member`]: A list of members who are requesting to speak in the stage channel."""  # noqa: E501
         return [
             member
             for member in self.members
@@ -2103,7 +2105,7 @@ class StageChannel(VocalGuildChannel):
         """List[:class:`Member`]: A list of members who have been permitted to speak in the stage channel.
 
         .. versionadded:: 2.0
-        """
+        """  # noqa: E501
         return [
             member
             for member in self.members
@@ -2346,7 +2348,8 @@ class CategoryChannel(abc.GuildChannel, Hashable):
 
         .. note::
 
-            To check if the channel or the guild of that channel are marked as NSFW, consider :meth:`is_nsfw` instead.
+            To check if the channel or the guild of that channel are marked as NSFW,
+            consider :meth:`is_nsfw` instead.
     flags: :class:`ChannelFlags`
         Extra features of the channel.
 
@@ -2373,7 +2376,10 @@ class CategoryChannel(abc.GuildChannel, Hashable):
         self._update(guild, data)
 
     def __repr__(self) -> str:
-        return f"<CategoryChannel id={self.id} name={self.name!r} position={self.position} nsfw={self.nsfw}>"
+        return (
+            f"<CategoryChannel id={self.id} name={self.name!r} "
+            f"position={self.position} nsfw={self.nsfw}>"
+        )
 
     def _update(self, guild: Guild, data: CategoryChannelPayload) -> None:
         self.guild: Guild = guild
@@ -2478,7 +2484,8 @@ class CategoryChannel(abc.GuildChannel, Hashable):
     def channels(self) -> List[GuildChannelType]:
         """List[:class:`abc.GuildChannel`]: Returns the channels that are under this category.
 
-        These are sorted by the official Discord UI, which places voice channels below the text channels.
+        These are sorted by the official Discord UI, which places voice channels
+        below the text channels.
         """
 
         def comparator(channel):
@@ -2533,7 +2540,7 @@ class CategoryChannel(abc.GuildChannel, Hashable):
         -------
         :class:`TextChannel`
             The channel that was just created.
-        """
+        """  # noqa: E501
         return await self.guild.create_text_channel(name, category=self, **options)
 
     async def create_voice_channel(self, name: str, **options: Any) -> VoiceChannel:
@@ -2545,7 +2552,7 @@ class CategoryChannel(abc.GuildChannel, Hashable):
         -------
         :class:`VoiceChannel`
             The channel that was just created.
-        """
+        """  # noqa: E501
         return await self.guild.create_voice_channel(name, category=self, **options)
 
     async def create_stage_channel(self, name: str, **options: Any) -> StageChannel:
@@ -2559,7 +2566,7 @@ class CategoryChannel(abc.GuildChannel, Hashable):
         -------
         :class:`StageChannel`
             The channel that was just created.
-        """
+        """  # noqa: E501
         return await self.guild.create_stage_channel(name, category=self, **options)
 
     async def create_forum_channel(self, name: str, **options: Any) -> ForumChannel:

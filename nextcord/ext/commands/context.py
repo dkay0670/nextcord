@@ -236,7 +236,7 @@ class Context(nextcord.abc.Messageable, Generic[BotT]):
         """:class:`str`: The cleaned up invoke prefix. i.e. mentions are ``@name`` instead of ``<@id>``.
 
         .. versionadded:: 2.0
-        """
+        """  # noqa: E501
         if self.prefix is None:
             return ""
 
@@ -250,7 +250,7 @@ class Context(nextcord.abc.Messageable, Generic[BotT]):
 
     @property
     def cog(self) -> Optional[Cog]:
-        """Optional[:class:`.Cog`]: Returns the cog associated with this context's command. None if it does not exist."""
+        """Optional[:class:`.Cog`]: Returns the cog associated with this context's command. None if it does not exist."""  # noqa: E501
 
         if self.command is None:
             return None
@@ -258,34 +258,36 @@ class Context(nextcord.abc.Messageable, Generic[BotT]):
 
     @nextcord.utils.cached_property
     def guild(self) -> Optional[Guild]:
-        """Optional[:class:`.Guild`]: Returns the guild associated with this context's command. None if not available."""
+        """Optional[:class:`.Guild`]: Returns the guild associated with this context's command. None if not available."""  # noqa: E501
         return self.message.guild
 
     @nextcord.utils.cached_property
     def channel(self) -> MessageableChannel:
         """Union[:class:`.abc.Messageable`]: Returns the channel associated with this context's command.
         Shorthand for :attr:`.Message.channel`.
-        """
+        """  # noqa: E501
         return self.message.channel
 
     @nextcord.utils.cached_property
     def author(self) -> Union[User, Member]:
         """Union[:class:`~nextcord.User`, :class:`.Member`]:
-        Returns the author associated with this context's command. Shorthand for :attr:`.Message.author`
+        Returns the author associated with this context's command.
+        Shorthand for :attr:`.Message.author`
         """
         return self.message.author
 
     @nextcord.utils.cached_property
     def me(self) -> Union[Member, ClientUser]:
         """Union[:class:`.Member`, :class:`.ClientUser`]:
-        Similar to :attr:`.Guild.me` except it may return the :class:`.ClientUser` in private message contexts.
+        Similar to :attr:`.Guild.me` except it may return the :class:`.ClientUser`
+        in private message contexts.
         """
         # bot.user will never be None at this point.
         return self.guild.me if self.guild is not None else self.bot.user  # type: ignore
 
     @property
     def voice_client(self) -> Optional[VoiceProtocol]:
-        r"""Optional[:class:`.VoiceProtocol`]: A shortcut to :attr:`.Guild.voice_client`\, if applicable."""
+        r"""Optional[:class:`.VoiceProtocol`]: A shortcut to :attr:`.Guild.voice_client`\, if applicable."""  # noqa: E501
         g = self.guild
         return g.voice_client if g else None
 

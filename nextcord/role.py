@@ -81,7 +81,10 @@ class RoleTags:
         return self.bot_id is not None
 
     def is_premium_subscriber(self) -> bool:
-        """:class:`bool`: Whether the role is the premium subscriber, AKA "boost", role for the guild."""
+        """:class:`bool`: Whether the role is the premium subscriber, role for the guild.
+
+        This is also known as the "booster" role.
+        """
         return self._premium_subscriber is None
 
     def is_integration(self) -> bool:
@@ -273,7 +276,9 @@ class Role(Hashable):
         return self.tags is not None and self.tags.is_bot_managed()
 
     def is_premium_subscriber(self) -> bool:
-        """:class:`bool`: Whether the role is the premium subscriber, AKA "boost", role for the guild.
+        """:class:`bool`: Whether the role is the premium subscriber, role for the guild.
+
+        This is also known as the "booster" role.
 
         .. versionadded:: 1.6
         """
@@ -438,7 +443,7 @@ class Role(Hashable):
         -------
         :class:`Role`
             The newly edited role.
-        """
+        """  # noqa: E501
         if position is not MISSING:
             await self._move(position, reason=reason)
 

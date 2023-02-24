@@ -154,7 +154,8 @@ class WebhookAdapter:
                         if remaining == "0" and response.status_code != 429:
                             delta = utils.parse_ratelimit_header(response)
                             _log.debug(
-                                "Webhook ID %s has been pre-emptively rate limited, waiting %.2f seconds",
+                                "Webhook ID %s has been pre-emptively rate limited, "
+                                "waiting %.2f seconds",
                                 webhook_id,
                                 delta,
                             )
@@ -734,7 +735,8 @@ class SyncWebhook(BaseWebhook):
         name: Optional[:class:`str`]
             The webhook's new default name.
         avatar: Optional[Union[:class:`bytes`, :class:`File`]]
-            A :term:`py:bytes-like object`, :class:`File` representing the webhook's new default avatar.
+            A :term:`py:bytes-like object`, :class:`File`
+            representing the webhook's new default avatar.
         channel: Optional[:class:`abc.Snowflake`]
             The webhook's new channel. This requires an authenticated webhook.
         reason: Optional[:class:`str`]
@@ -807,7 +809,10 @@ class SyncWebhook(BaseWebhook):
     def _create_message(self, data):
         state = _WebhookState(self, parent=self._state)
         # state may be artificial (unlikely at this point...)
-        channel = self.channel or PartialMessageable(state=self._state, id=int(data["channel_id"]))  # type: ignore
+        channel = self.channel or PartialMessageable(
+            state=self._state,  # type: ignore
+            id=int(data["channel_id"]),
+        )
         # state is artificial
         return SyncWebhookMessage(data=data, state=state, channel=channel)  # type: ignore
 

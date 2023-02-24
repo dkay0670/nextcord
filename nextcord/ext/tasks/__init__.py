@@ -237,7 +237,7 @@ class Loop(Generic[LF]):
         ``None`` if relative times were passed instead.
 
         .. versionadded:: 2.0
-        """
+        """  # noqa: E501
         if self._time is not MISSING:
             return self._time.copy()
 
@@ -420,7 +420,7 @@ class Loop(Generic[LF]):
         return len(self._valid_exception) == old_length - len(exceptions)
 
     def get_task(self) -> Optional[asyncio.Task[None]]:
-        """Optional[:class:`asyncio.Task`]: Fetches the internal task or ``None`` if there isn't one running."""
+        """Optional[:class:`asyncio.Task`]: Fetches the internal task or ``None`` if there isn't one running."""  # noqa: E501
         return self._task if self._task is not MISSING else None
 
     def is_being_cancelled(self) -> bool:
@@ -504,9 +504,11 @@ class Loop(Generic[LF]):
         return coro
 
     def error(self, coro: ET) -> ET:
-        """A decorator that registers a coroutine to be called if the task encounters an unhandled exception.
+        """A decorator that registers a coroutine to be called
+        if the task encounters an unhandled exception.
 
-        The coroutine must take only one argument the exception raised (except ``self`` in a class context).
+        The coroutine must take only one argument the exception raised
+        (except ``self`` in a class context).
 
         By default this prints to :data:`~sys.stderr` however it could be
         overridden to have a different implementation.
@@ -586,7 +588,8 @@ class Loop(Generic[LF]):
             return [inner]
         if not isinstance(time, Sequence):
             raise TypeError(
-                f"Expected datetime.time or a sequence of datetime.time for ``time``, received {type(time)!r} instead."
+                "Expected datetime.time or a sequence of datetime.time for ``time``, "
+                f"received {type(time)!r} instead."
             )
         if not time:
             raise ValueError("time parameter must not be an empty sequence.")
@@ -595,7 +598,8 @@ class Loop(Generic[LF]):
         for index, t in enumerate(time):
             if not isinstance(t, dt):
                 raise TypeError(
-                    f"Expected a sequence of {dt!r} for ``time``, received {type(t).__name__!r} at index {index} instead."
+                    f"Expected a sequence of {dt!r} for ``time``, received {type(t).__name__!r} "
+                    f"at index {index} instead."
                 )
             ret.append(t if t.tzinfo is not None else t.replace(tzinfo=utc))
 

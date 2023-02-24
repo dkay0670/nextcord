@@ -853,7 +853,7 @@ class BadLiteralArgument(UserInputError):
         self.literals: Tuple[Any, ...] = literals
         self.errors: List[CommandError] = errors
 
-        to_string = [repr(l) for l in literals]
+        to_string = [repr(literal) for literal in literals]
         if len(to_string) > 2:
             fmt = "{}, or {}".format(", ".join(to_string[:-1]), to_string[-1])
         else:
@@ -997,7 +997,7 @@ class ExtensionFailed(ExtensionError):
     original: :exc:`Exception`
         The original exception that was raised. You can also get this via
         the ``__cause__`` attribute.
-    """
+    """  # noqa: E501
 
     def __init__(self, name: str, original: Exception) -> None:
         self.original: Exception = original

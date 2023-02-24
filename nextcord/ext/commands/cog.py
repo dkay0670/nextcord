@@ -184,7 +184,9 @@ class Cog(ClientCog, metaclass=CogMeta):
 
         # Either update the command with the cog provided defaults or copy it.
         # r.e type ignore, type-checker complains about overriding a ClassVar
-        self.__cog_commands__ = tuple(c._update_copy(cmd_attrs) for c in cls.__cog_commands__)  # type: ignore
+        self.__cog_commands__ = tuple(
+            c._update_copy(cmd_attrs) for c in cls.__cog_commands__
+        )  # type: ignore
 
         lookup = {cmd.qualified_name: cmd for cmd in self.__cog_commands__}
 

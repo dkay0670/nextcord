@@ -273,7 +273,8 @@ class Invite(Hashable):
         This includes idle, dnd, online, and invisible members. Offline members are excluded.
     expires_at: Optional[:class:`datetime.datetime`]
         The expiration date of the invite. If the value is ``None`` when received through
-        :meth:`Client.fetch_invite` with ``with_expiration`` enabled, the invite will never expire.
+        :meth:`Client.fetch_invite` with ``with_expiration`` enabled,
+        the invite will never expire.
 
         .. versionadded:: 2.0
 
@@ -293,7 +294,7 @@ class Invite(Hashable):
         The embedded application the invite targets, if any.
 
         .. versionadded:: 2.0
-    """
+    """  # noqa: E501
 
     __slots__ = (
         "max_age",

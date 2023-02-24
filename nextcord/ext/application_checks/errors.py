@@ -240,7 +240,7 @@ class ApplicationNSFWChannelRequired(ApplicationCheckFailure):
     ----------
     channel: Optional[Union[:class:`.abc.GuildChannel`, :class:`.Thread`, :class:`PartialMessageable`]]
         The channel that does not have NSFW enabled.
-    """
+    """  # noqa: E501
 
     def __init__(self, channel: Optional[Union[GuildChannel, Thread, PartialMessageable]]) -> None:
         self.channel: Optional[Union[GuildChannel, Thread, PartialMessageable]] = channel

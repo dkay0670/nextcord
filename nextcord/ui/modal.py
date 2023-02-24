@@ -348,8 +348,8 @@ class Modal:
     def is_persistent(self) -> bool:
         """:class:`bool`: Whether the modal is set up as persistent.
 
-        A persistent modal has a set ``custom_id`` and all their components with a set ``custom_id`` and
-        a :attr:`timeout` set to ``None``.
+        A persistent modal has a set ``custom_id`` and all their components
+        with a set ``custom_id`` and a :attr:`timeout` set to ``None``.
         """
         return (
             self._provided_custom_id

@@ -187,8 +187,7 @@ class Reaction:
             to this message. The case where it can be a :class:`Member` is
             in a guild message context. Sometimes it can be a :class:`User`
             if the member has left the guild.
-        """
-
+        """  # noqa: E501
         if not isinstance(self.emoji, str):
             emoji = f"{self.emoji.name}:{self.emoji.id}"
         else:

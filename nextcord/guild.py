@@ -202,7 +202,7 @@ class Guild(Hashable):
         - ``ANIMATED_BANNER``: Guild can upload an animated banner.
         - ``ANIMATED_ICON``: Guild can upload an animated icon.
         - ``AUTO_MODERATION``: Guild has set up auto moderation rules.
-        - ``APPLICATION_COMMAND_PERMISSIONS_V2``: Guild is using the old permissions configuration behavior.
+        - ``APPLICATION_COMMAND_PERMISSIONS_V2``: Guild uses the old permissions config behaviour.
         - ``BANNER``: Guild can upload and use a banner. (i.e. :attr:`.banner`)
         - ``COMMUNITY``: Guild is a community server.
         - ``DEVELOPER_SUPPORT_SERVER``: Guild has been set as a support server on the App Directory.
@@ -237,8 +237,9 @@ class Guild(Hashable):
         .. versionadded:: 2.0
 
     approximate_member_count: Optional[:class:`int`]
-        The approximate number of members in the guild. This is ``None`` unless the guild is obtained
-        using :meth:`Client.fetch_guild` with ``with_counts=True``.
+        The approximate number of members in the guild. This is ``None``
+        unless the guild is obtained using :meth:`Client.fetch_guild` with
+        ``with_counts=True``.
 
         .. versionadded:: 2.0
 
@@ -506,7 +507,9 @@ class Guild(Hashable):
         self._large: Optional[bool] = None if member_count is None else self._member_count >= 250
 
         self.owner_id: Optional[int] = utils.get_as_snowflake(guild, "owner_id")
-        self.afk_channel: Optional[VocalGuildChannel] = self.get_channel(utils.get_as_snowflake(guild, "afk_channel_id"))  # type: ignore
+        self.afk_channel: Optional[VocalGuildChannel] = self.get_channel(
+            utils.get_as_snowflake(guild, "afk_channel_id")  # type: ignore
+        )
 
         for obj in guild.get("voice_states", []):
             self._update_voice_state(obj, int(obj["channel_id"]))
@@ -533,7 +536,13 @@ class Guild(Hashable):
             for c in channels:
                 factory, _ = _guild_channel_factory(c["type"])
                 if factory:
-                    self._add_channel(factory(guild=self, data=c, state=self._state))  # type: ignore
+                    self._add_channel(
+                        factory(
+                            guild=self,
+                            data=c,  # type: ignore
+                            state=self._state,
+                        )
+                    )
 
         if "threads" in data:
             threads = data["threads"]
@@ -608,7 +617,7 @@ class Guild(Hashable):
 
     @property
     def voice_client(self) -> Optional[VoiceProtocol]:
-        """Optional[:class:`VoiceProtocol`]: Returns the :class:`VoiceProtocol` associated with this guild, if any."""
+        """Optional[:class:`VoiceProtocol`]: Returns the :class:`VoiceProtocol` for this guild."""
         return self._state._get_voice_client(self.id)
 
     @property
@@ -891,7 +900,9 @@ class Guild(Hashable):
 
     @property
     def premium_subscriber_role(self) -> Optional[Role]:
-        """Optional[:class:`Role`]: Gets the premium subscriber role, AKA "boost" role, in this guild.
+        """Optional[:class:`Role`]: Gets the premium subscriber role in this guild.
+
+        This is also known as the `booster" role
 
         .. versionadded:: 1.6
         """
@@ -1644,23 +1655,26 @@ class Guild(Hashable):
             This is only available to guilds that contain ``PUBLIC`` in :attr:`Guild.features`.
         icon: Optional[Union[:class:`bytes`, :class:`Asset`, :class:`Attachment`, :class:`File`]]
             A :term:`py:bytes-like object`, :class:`File`, :class:`Attachment`, or :class:`Asset`
-            representing the icon. Only PNG/JPEG is supported. GIF is only available to guilds that contain
-            ``ANIMATED_ICON`` in :attr:`Guild.features`. Could be ``None`` to denote removal of the icon.
+            representing the icon. Only PNG/JPEG is supported. GIF is only available to guilds
+            that contain ``ANIMATED_ICON`` in :attr:`Guild.features`. Could be ``None``
+            to denote removal of the icon.
         banner: Optional[Union[:class:`bytes`, :class:`Asset`, :class:`Attachment`, :class:`File`]]
             A :term:`py:bytes-like object`, :class:`File`, :class:`Attachment`, or :class:`Asset`
             representing the banner. Could be ``None`` to denote removal of the banner.
             This is only available to guilds that contain ``BANNER`` in :attr:`Guild.features`.
         splash: Optional[Union[:class:`bytes`, :class:`Asset`, :class:`Attachment`, :class:`File`]]
             A :term:`py:bytes-like object`, :class:`File`, :class:`Attachment`, or :class:`Asset`
-            representing the invite splash. Only PNG/JPEG supported. Could be ``None`` to denote removing the
-            splash. This is only available to guilds that contain ``INVITE_SPLASH`` in :attr:`Guild.features`.
+            representing the invite splash. Only PNG/JPEG supported. Could be ``None``
+            to denote removing the splash. This is only available to guilds that contain
+            ``INVITE_SPLASH`` in :attr:`Guild.features`.
         discovery_splash: Optional[Union[:class:`bytes`, :class:`Asset`, :class:`Attachment`, :class:`File`]]
             A :term:`py:bytes-like object`, :class:`File`, :class:`Attachment`, or :class:`Asset`
-            representing the discovery splash. Only PNG/JPEG supported. Could be ``None`` to denote removing the
-            splash. This is only available to guilds that contain ``DISCOVERABLE`` in :attr:`Guild.features`.
+            representing the discovery splash. Only PNG/JPEG supported. Could be ``None``
+            to denote removing the splash. This is only available to guilds that contain
+            ``DISCOVERABLE`` in :attr:`Guild.features`.
         community: :class:`bool`
-            Whether the guild should be a Community guild. If set to ``True``\, both ``rules_channel``
-            and ``public_updates_channel`` parameters are required.
+            Whether the guild should be a Community guild. If set to ``True``\, both
+            ``rules_channel`` and ``public_updates_channel`` parameters are required.
         region: Union[:class:`str`, :class:`VoiceRegion`]
             The new region for the guild's voice communication.
         afk_channel: Optional[:class:`VoiceChannel`]
@@ -1679,7 +1693,8 @@ class Guild(Hashable):
         vanity_code: :class:`str`
             The new vanity code for the guild.
         system_channel: Optional[:class:`TextChannel`]
-            The new channel that is used for the system channel. Could be ``None`` for no system channel.
+            The new channel that is used for the system channel.
+            Could be ``None`` for no system channel.
         system_channel_flags: :class:`SystemChannelFlags`
             The new system channel settings to use with the new system channel.
         preferred_locale: :class:`str`
@@ -1717,8 +1732,7 @@ class Guild(Hashable):
         :class:`Guild`
             The newly updated guild. Note that this has the same limitations as
             mentioned in :meth:`Client.fetch_guild` and may not have full data.
-        """
-
+        """  # noqa: E501
         http = self._state.http
 
         if vanity_code is not MISSING:
@@ -1816,7 +1830,8 @@ class Guild(Hashable):
                     features.append("COMMUNITY")
                 else:
                     raise InvalidArgument(
-                        "community field requires both rules_channel and public_updates_channel fields to be provided"
+                        "community field requires both rules_channel "
+                        "and public_updates_channel fields to be provided"
                     )
 
             fields["features"] = features
@@ -1903,8 +1918,9 @@ class Guild(Hashable):
     def fetch_members(
         self, *, limit: Optional[int] = 1000, after: Optional[SnowflakeTime] = None
     ) -> MemberIterator:
-        """Retrieves an :class:`.AsyncIterator` that enables receiving the guild's members. In order to use this,
-        :meth:`Intents.members` must be enabled.
+        """Retrieves an :class:`.AsyncIterator` that enables receiving the guild's members.
+
+        In order to use this, :meth:`Intents.members` must be enabled.
 
         .. note::
 
@@ -1962,7 +1978,8 @@ class Guild(Hashable):
 
         .. note::
 
-            This method is an API call. If you have :attr:`Intents.members` and member cache enabled, consider :meth:`get_member` instead.
+            This method is an API call. If you have :attr:`Intents.members`
+            and member cache enabled, consider :meth:`get_member` instead.
 
         Parameters
         ----------
@@ -2021,7 +2038,8 @@ class Guild(Hashable):
 
         .. note::
 
-            This method is an API call. For general usage, consider :meth:`get_channel_or_thread` instead.
+            This method is an API call. For general usage, consider
+            :meth:`get_channel_or_thread` instead.
 
         .. versionadded:: 2.0
 
@@ -2069,12 +2087,13 @@ class Guild(Hashable):
         before: Optional[Snowflake] = None,
         after: Optional[Snowflake] = None,
     ) -> BanIterator:
-        """Returns an :class:`~nextcord.AsyncIterator` that enables receiving the destination's bans.
+        """Returns an :class:`~nextcord.AsyncIterator` that enables receiving guild bans.
 
         You must have the :attr:`~Permissions.ban_members` permission to get this information.
 
         .. versionchanged:: 2.0
-            Due to a breaking change in Discord's API, this now returns an :class:`~nextcord.AsyncIterator` instead of a :class:`list`.
+            Due to a breaking change in Discord's API, this now returns an
+            :class:`~nextcord.AsyncIterator` instead of a :class:`list`.
 
         Examples
         --------
@@ -2158,8 +2177,9 @@ class Guild(Hashable):
             to prevent timeouts, you must set this to ``False``. If this is
             set to ``False``\, then this function will always return ``None``.
         roles: List[:class:`abc.Snowflake`]
-            A list of :class:`abc.Snowflake` that represent roles to include in the pruning process. If a member
-            has a role that is not specified, they'll be excluded.
+            A list of :class:`abc.Snowflake` that represent roles to include
+            in the pruning process. If a member has a role that is not specified,
+            they'll be excluded.
 
         Raises
         ------
@@ -2253,8 +2273,8 @@ class Guild(Hashable):
         days: :class:`int`
             The number of days before counting as inactive.
         roles: List[:class:`abc.Snowflake`]
-            A list of :class:`abc.Snowflake` that represent roles to include in the estimate. If a member
-            has a role that is not specified, they'll be excluded.
+            A list of :class:`abc.Snowflake` that represent roles to include in the estimate.
+            If a member has a role that is not specified, they'll be excluded.
 
             .. versionadded:: 1.7
 
@@ -2623,7 +2643,8 @@ class Guild(Hashable):
         do this.
 
         .. versionchanged:: 2.1
-            The ``image`` parameter now accepts :class:`File`, :class:`Attachment`, and :class:`Asset`.
+            The ``image`` parameter now accepts :class:`File`, :class:`Attachment`,
+            and :class:`Asset`.
 
         Parameters
         ----------
@@ -2633,7 +2654,8 @@ class Guild(Hashable):
             The :term:`py:bytes-like object`, :class:`File`, :class:`Attachment`, or :class:`Asset`
             representing the image data to use. Only JPG, PNG and GIF images are supported.
         roles: List[:class:`Role`]
-            A :class:`list` of :class:`Role`\s that can use this emoji. Leave empty to make it available to everyone.
+            A :class:`list` of :class:`Role`\s that can use this emoji.
+            Leave empty to make it available to everyone.
         reason: Optional[:class:`str`]
             The reason for creating this emoji. Shows up on the audit log.
 
@@ -2774,7 +2796,8 @@ class Guild(Hashable):
             Can now pass ``int`` to ``colour`` keyword-only parameter.
 
         .. versionchanged:: 2.1
-            The ``icon`` parameter now accepts :class:`File`, :class:`Attachment`, and :class:`Asset`.
+            The ``icon`` parameter now accepts :class:`File`, :class:`Attachment`,
+            and :class:`Asset`.
 
         Parameters
         ----------
@@ -2809,7 +2832,7 @@ class Guild(Hashable):
         -------
         :class:`Role`
             The newly created role.
-        """
+        """  # noqa: E501
         fields: Dict[str, Any] = {}
         if permissions is not MISSING:
             fields["permissions"] = str(permissions.value)
@@ -3276,10 +3299,10 @@ class Guild(Hashable):
             Whether to cache the members internally. This makes operations
             such as :meth:`get_member` work for those that matched.
         user_ids: Optional[List[:class:`int`]]
-            List of user IDs to search for. If the user ID is not in the guild then it won't be returned.
+            List of user IDs to search for. If the user ID is not in the guild
+            then it won't be returned.
 
             .. versionadded:: 1.4
-
 
         Raises
         ------
@@ -3455,7 +3478,8 @@ class Guild(Hashable):
         Create a new scheduled event object.
 
         .. versionchanged:: 2.1
-            The ``image`` parameter now accepts :class:`File`, :class:`Attachment`, and :class:`Asset`.
+            The ``image`` parameter now accepts :class:`File`, :class:`Attachment`,
+            and :class:`Asset`.
 
         Parameters
         ----------
@@ -3556,21 +3580,24 @@ class Guild(Hashable):
         Parameters
         ----------
         data: Optional[List[:class:`dict`]]
-            Data to use when comparing local application commands to what Discord has. Should be a list of application
-            command data from Discord. If left as ``None``, it will be fetched if needed. Defaults to ``None``.
+            Data to use when comparing local application commands to what Discord has.
+            Should be a list of application command data from Discord.
+            If left as ``None``, it will be fetched if needed. Defaults to ``None``.
         associate_known: :class:`bool`
-            If local commands that match a command already on Discord should be associated with each other.
-            Defaults to ``True``.
+            If local commands that match a command already on Discord
+            should be associated with each other. Defaults to ``True``.
         delete_unknown: :class:`bool`
-            If commands on Discord that don't match a local command should be deleted. Defaults to ``True``.
+            If commands on Discord that don't match a local command should be deleted.
+            Defaults to ``True``.
         update_known: :class:`bool`
-            If commands on Discord have a basic match with a local command, but don't fully match, should be updated.
-            Defaults to ``True``.
+            If commands on Discord have a basic match with a local command,
+            but don't fully match, should be updated. Defaults to ``True``.
         register_new: :class:`bool`
-            If a local command that doesn't have a basic match on Discord should be added to Discord.
-            Defaults to ``True``.
+            If a local command that doesn't have a basic match on Discord
+            should be added to Discord. Defaults to ``True``.
         """
-        # All this does is passthrough to connection state. All documentation updates should also be updated
+        # All this does is passthrough to connection state.
+        # All documentation updates should also be updated
         # there, and vice versa.
         await self._state.sync_application_commands(
             data=data,
@@ -3595,8 +3622,8 @@ class Guild(Hashable):
         Parameters
         ----------
         associate_known: :class:`bool`
-            Whether commands on Discord that match a locally added command should be associated with each other.
-            Defaults to ``True``
+            Whether commands on Discord that match a locally added command
+            should be associated with each other. Defaults to ``True``
         delete_unknown
         update_known
         register_new
@@ -3799,7 +3826,9 @@ class Guild(Hashable):
 
     def parse_mentions(self, text: str) -> List[Union[Member, User]]:
         """Parses user mentions in a string and returns a list of :class:`Member` objects.
-        If the member is not in the guild, a :class:`User` object is returned for that member instead.
+
+        If the member is not in the guild, a :class:`User` object is returned
+        for that member instead.
 
         .. note::
 
@@ -3855,7 +3884,7 @@ class Guild(Hashable):
         return utils.unique(it)
 
     def parse_channel_mentions(self, text: str) -> List[abc.GuildChannel]:
-        """Parses channel mentions in a string and returns a list of :class:`~abc.GuildChannel` objects.
+        r"""Parses channel mentions in a string and returns a list of :class:`~abc.GuildChannel`\s.
 
         .. note::
 

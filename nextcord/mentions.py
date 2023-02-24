@@ -60,7 +60,7 @@ class AllowedMentions:
 
     @classmethod
     def all(cls) -> Self:
-        """A factory method that returns a :class:`AllowedMentions` with all fields explicitly set to ``True``
+        """A factory method that returns a :class:`AllowedMentions` with all fields set to ``True``
 
         .. versionadded:: 1.5
         """

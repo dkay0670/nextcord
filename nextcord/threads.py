@@ -220,7 +220,7 @@ class Thread(Messageable, Hashable, PinsMixin):
 
     @property
     def parent(self) -> Optional[Union[TextChannel, ForumChannel]]:
-        """Optional[Union[:class:`TextChannel`, :class:`ForumChannel`]]: The parent channel this thread belongs to."""
+        """Optional[Union[:class:`TextChannel`, :class:`ForumChannel`]]: The parent channel this thread belongs to."""  # noqa: E501
         return self.guild.get_channel(self.parent_id)  # type: ignore
 
     @property
@@ -515,9 +515,7 @@ class Thread(Messageable, Hashable, PinsMixin):
         """
 
         if check is MISSING:
-
-            def check(m) -> bool:
-                return True
+            check = lambda m: True  # noqa: E731
 
         iterator = self.history(
             limit=limit, before=before, after=after, oldest_first=oldest_first, around=around
@@ -686,8 +684,9 @@ class Thread(Messageable, Hashable, PinsMixin):
         Adds a user to this thread.
 
         You must have :attr:`~Permissions.send_messages` and :attr:`~Permissions.use_threads`
-        to add a user to a public thread. If the thread is private then :attr:`~Permissions.send_messages`
-        and either :attr:`~Permissions.use_private_threads` or :attr:`~Permissions.manage_messages`
+        to add a user to a public thread. If the thread is private then
+        :attr:`~Permissions.send_messages` and either
+        :attr:`~Permissions.use_private_threads` or :attr:`~Permissions.manage_messages`
         is required to add a user to the thread.
 
         Parameters
@@ -709,7 +708,8 @@ class Thread(Messageable, Hashable, PinsMixin):
 
         Removes a user from this thread.
 
-        You must have :attr:`~Permissions.manage_threads` or be the creator of the thread to remove a user.
+        You must have :attr:`~Permissions.manage_threads` or be the creator of the thread
+        to remove a user.
 
         Parameters
         ----------
@@ -874,6 +874,7 @@ class ThreadMember(Hashable):
         """:class:`Member`: Retrieves the :class:`Member` of this thread member.
 
         .. note::
-            This method is an API call. If you have :attr:`Intents.members` and members cache enabled, consider :attr:`member` instead.
+            This method is an API call. If you have :attr:`Intents.members`
+            and members cache enabled, consider :attr:`member` instead.
         """
         return await self.parent.guild.fetch_member(self.id)

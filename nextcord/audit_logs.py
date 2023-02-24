@@ -233,48 +233,52 @@ Transformer = Callable[["AuditLogEntry", Any], Any]
 
 
 class AuditLogChanges:
-    # fmt: off
     TRANSFORMERS: ClassVar[Dict[str, Tuple[Optional[str], Optional[Transformer]]]] = {
-        "verification_level":            (None, _enum_transformer(enums.VerificationLevel)),
-        "explicit_content_filter":       (None, _enum_transformer(enums.ContentFilter)),
-        "allow":                         (None, _transform_permissions),
-        "deny":                          (None, _transform_permissions),
-        "permissions":                   (None, _transform_permissions),
-        "id":                            (None, _transform_snowflake),
-        "color":                         ("colour", _transform_color),
-        "owner_id":                      ("owner", _transform_member_id),
-        "inviter_id":                    ("inviter", _transform_member_id),
-        "channel_id":                    ("channel", _transform_channel),
-        "afk_channel_id":                ("afk_channel", _transform_channel),
-        "system_channel_id":             ("system_channel", _transform_channel),
-        "widget_channel_id":             ("widget_channel", _transform_channel),
-        "rules_channel_id":              ("rules_channel", _transform_channel),
-        "public_updates_channel_id":     ("public_updates_channel", _transform_channel),
-        "permission_overwrites":         ("overwrites", _transform_overwrites),
-        "splash_hash":                   ("splash", _guild_hash_transformer("splashes")),
-        "banner_hash":                   ("banner", _guild_hash_transformer("banners")),
-        "discovery_splash_hash":         ("discovery_splash", _guild_hash_transformer("discovery-splashes")),
-        "icon_hash":                     ("icon", _transform_icon),
-        "avatar_hash":                   ("avatar", _transform_avatar),
-        "rate_limit_per_user":           ("slowmode_delay", None),
-        "guild_id":                      ("guild", _transform_guild_id),
-        "tags":                          ("emoji", None),
-        "default_message_notifications": ("default_notifications", _enum_transformer(enums.NotificationLevel)),
-        "region":                        (None, _enum_transformer(enums.VoiceRegion)),
-        "rtc_region":                    (None, _enum_transformer(enums.VoiceRegion)),
-        "video_quality_mode":            (None, _enum_transformer(enums.VideoQualityMode)),
-        "privacy_level":                 (None, _enum_transformer(enums.StagePrivacyLevel)),
-        "format_type":                   (None, _enum_transformer(enums.StickerFormatType)),
-        "entity_type":                   (None, _enum_transformer(enums.ScheduledEventEntityType)),
-        "type":                          (None, _transform_type),
-        "trigger_type":                  (None, _enum_transformer(enums.AutoModerationTriggerType)),
-        "event_type":                    (None, _enum_transformer(enums.AutoModerationEventType)),
-        "actions":                       (None, _list_transformer(_transform_auto_moderation_action)),
-        "trigger_metadata":              (None, _transform_auto_moderation_trigger_metadata),
-        "exempt_roles":                  (None, _list_transformer(_transform_role)),
-        "exempt_channels":               (None, _list_transformer(_transform_channel)),
+        "verification_level": (None, _enum_transformer(enums.VerificationLevel)),
+        "explicit_content_filter": (None, _enum_transformer(enums.ContentFilter)),
+        "allow": (None, _transform_permissions),
+        "deny": (None, _transform_permissions),
+        "permissions": (None, _transform_permissions),
+        "id": (None, _transform_snowflake),
+        "color": ("colour", _transform_color),
+        "owner_id": ("owner", _transform_member_id),
+        "inviter_id": ("inviter", _transform_member_id),
+        "channel_id": ("channel", _transform_channel),
+        "afk_channel_id": ("afk_channel", _transform_channel),
+        "system_channel_id": ("system_channel", _transform_channel),
+        "widget_channel_id": ("widget_channel", _transform_channel),
+        "rules_channel_id": ("rules_channel", _transform_channel),
+        "public_updates_channel_id": ("public_updates_channel", _transform_channel),
+        "permission_overwrites": ("overwrites", _transform_overwrites),
+        "splash_hash": ("splash", _guild_hash_transformer("splashes")),
+        "banner_hash": ("banner", _guild_hash_transformer("banners")),
+        "discovery_splash_hash": (
+            "discovery_splash",
+            _guild_hash_transformer("discovery-splashes"),
+        ),
+        "icon_hash": ("icon", _transform_icon),
+        "avatar_hash": ("avatar", _transform_avatar),
+        "rate_limit_per_user": ("slowmode_delay", None),
+        "guild_id": ("guild", _transform_guild_id),
+        "tags": ("emoji", None),
+        "default_message_notifications": (
+            "default_notifications",
+            _enum_transformer(enums.NotificationLevel),
+        ),
+        "region": (None, _enum_transformer(enums.VoiceRegion)),
+        "rtc_region": (None, _enum_transformer(enums.VoiceRegion)),
+        "video_quality_mode": (None, _enum_transformer(enums.VideoQualityMode)),
+        "privacy_level": (None, _enum_transformer(enums.StagePrivacyLevel)),
+        "format_type": (None, _enum_transformer(enums.StickerFormatType)),
+        "entity_type": (None, _enum_transformer(enums.ScheduledEventEntityType)),
+        "type": (None, _transform_type),
+        "trigger_type": (None, _enum_transformer(enums.AutoModerationTriggerType)),
+        "event_type": (None, _enum_transformer(enums.AutoModerationEventType)),
+        "actions": (None, _list_transformer(_transform_auto_moderation_action)),
+        "trigger_metadata": (None, _transform_auto_moderation_trigger_metadata),
+        "exempt_roles": (None, _list_transformer(_transform_role)),
+        "exempt_channels": (None, _list_transformer(_transform_channel)),
     }
-    # fmt: on
 
     def __init__(self, entry: AuditLogEntry, data: List[AuditLogChangePayload]) -> None:
         self.before = AuditLogDiff()
@@ -609,7 +613,12 @@ class AuditLogEntry(Hashable):
             "uses": changeset.uses,
         }
 
-        obj = Invite(state=self._state, data=fake_payload, guild=self.guild, channel=changeset.channel)  # type: ignore
+        obj = Invite(
+            state=self._state,
+            data=fake_payload,  # type: ignore
+            guild=self.guild,
+            channel=changeset.channel,
+        )
         try:
             obj.inviter = changeset.inviter
         except AttributeError:

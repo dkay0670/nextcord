@@ -121,8 +121,8 @@ def _is_submodule(parent: str, child: str) -> bool:
 
 class MissingMessageContentIntentWarning(UserWarning):
     """Warning category raised when instantiating a :class:`~nextcord.ext.commands.Bot` with a
-    :attr:`~nextcord.ext.commands.Bot.command_prefix` but without the :attr:`~nextcord.Intents.message_content`
-    intent enabled.
+    :attr:`~nextcord.ext.commands.Bot.command_prefix` but without the
+    :attr:`~nextcord.Intents.message_content` intent enabled.
 
     This warning is not raised when the :attr:`~nextcord.ext.commands.Bot.command_prefix`
     is set to an empty iterable or :func:`when_mentioned <nextcord.ext.commands.when_mentioned>`.
@@ -200,7 +200,7 @@ class BotBase(GroupMixin):
             warnings.warn(
                 "Message content intent is not enabled. "
                 "Prefix commands may not work as expected unless you enable this. "
-                "See https://docs.nextcord.dev/en/stable/intents.html#what-happened-to-my-prefix-commands "
+                "See https://docs.nextcord.dev/en/stable/intents.html#what-happened-to-my-prefix-commands "  # noqa: E501
                 "for more information.",
                 category=MissingMessageContentIntentWarning,
                 stacklevel=0,
@@ -327,10 +327,10 @@ class BotBase(GroupMixin):
             If the function was added with ``call_once=True`` in
             the :meth:`.Bot.add_check` call or using :meth:`.check_once`.
         """
-        l = self._check_once if call_once else self._checks
+        checks = self._check_once if call_once else self._checks
 
         try:
-            l.remove(func)
+            checks.remove(func)
         except ValueError:
             pass
 
@@ -619,11 +619,13 @@ class BotBase(GroupMixin):
         self.__cogs[cog_name] = cog
         # TODO: This blind call to nextcord.Client is dumb.
         super().add_cog(cog)  # type: ignore
-        # Info: To add the ability to use BaseApplicationCommands in Cogs, the Client has to be aware of cogs. For
-        # minimal editing, BotBase must call Client's add_cog function. While it all works out in the end because Bot
-        # and AutoShardedBot both end up subclassing Client, this is BotBase and BotBase does not subclass Client, hence
-        # this being a "blind call" to nextcord.Client
-        # Whatever warning that your IDE is giving about the above line of code is correct. When Bot + BotBase
+        # Info: To add the ability to use BaseApplicationCommands in Cogs,
+        # the Client has to be aware of cogs. For minimal editing,
+        # BotBase must call Client's add_cog function. While it all works out
+        # in the end because Bot and AutoShardedBot both end up subclassing Client,
+        # this is BotBase and BotBase does not subclass Client, hence this being a
+        # "blind call" to nextcord.Client Whatever warning that your IDE is giving
+        # about the above line of code is correct. When Bot + BotBase
         # inevitably get reworked, make me happy and fix this.
 
     def get_cog(self, name: str) -> Optional[Cog]:
@@ -769,7 +771,7 @@ class BotBase(GroupMixin):
                     Looks like you are attempting to load an asynchronous setup function incorrectly.
                     Please read our FAQ here:
                     https://docs.nextcord.dev/en/stable/faq.html#how-do-i-make-my-setup-function-a-coroutine-and-load-it
-                    """
+                    """  # noqa: E501
                     )
             else:
                 setup(self, **extras)
@@ -979,7 +981,8 @@ class BotBase(GroupMixin):
 
         .. note::
 
-            By default, any exceptions found while loading will not be raised but will be printed to console (standard error/:data:`~sys.stderr`).
+            By default, any exceptions found while loading will not be raised
+            but will be printed to console (standard error/:data:`~sys.stderr`).
 
         .. versionadded:: 2.1
 
@@ -1080,7 +1083,8 @@ class BotBase(GroupMixin):
         Raises
         ------
         ValueError
-            The length of ``packages`` or the length of ``extras` is not equal to the length of ``names``.
+            The length of ``packages`` or the length of ``extras` is not equal
+            to the length of ``names``.
         InvalidArgument
             You passed in both ``package`` and ``packages``.
         ExtensionNotFound
@@ -1115,7 +1119,8 @@ class BotBase(GroupMixin):
                 if stop_at_error:
                     raise e
                 else:
-                    # we print the exception instead of raising it because we want to continue loading extensions
+                    # we print the exception instead of raising it because
+                    # we want to continue loading extensions
                     traceback.print_exception(type(e), e, e.__traceback__, file=sys.stderr)
             else:
                 loaded_extensions.append(extension)
@@ -1133,7 +1138,8 @@ class BotBase(GroupMixin):
 
         .. note::
 
-            By default, any exceptions found while loading will not be raised but will be printed to console (standard error/:data:`~sys.stderr`).
+            By default, any exceptions found while loading will not be raised
+            but will be printed to console (standard error/:data:`~sys.stderr`).
 
         .. versionadded:: 2.1
 
@@ -1193,7 +1199,7 @@ class BotBase(GroupMixin):
 
     @property
     def extensions(self) -> Mapping[str, types.ModuleType]:
-        """Mapping[:class:`str`, :class:`py:types.ModuleType`]: A read-only mapping of extension name to extension."""
+        """Mapping[:class:`str`, :class:`py:types.ModuleType`]: A read-only mapping of extension name to extension."""  # noqa: E501
         return types.MappingProxyType(self.__extensions)
 
     # help command stuff
@@ -1498,8 +1504,9 @@ class BotBase(GroupMixin):
 
         .. note::
 
-            The :meth:`.application_command_before_invoke` and :meth:`.application_command_after_invoke`
-            hooks are only called if all checks pass without error. If any check fails, then the hooks
+            The :meth:`.application_command_before_invoke` and
+            :meth:`.application_command_after_invoke` hooks are only called if
+            all checks pass without error. If any check fails, then the hooks
             are not called.
 
         Parameters
@@ -1530,9 +1537,10 @@ class BotBase(GroupMixin):
 
         .. note::
 
-            Similar to :meth:`~.Client.application_command_before_invoke`\, this is not called unless
-            checks succeed. This hook is, however, **always** called regardless of the internal command
-            callback raising an error (i.e. :exc:`.ApplicationInvokeError`\).
+            Similar to :meth:`~.Client.application_command_before_invoke`\,
+            this is not called unless checks succeed. This hook is, however,
+            **always** called regardless of the internal command callback raising
+            an error (i.e. :exc:`.ApplicationInvokeError`\).
             This makes it ideal for clean-up scenarios.
 
         Parameters

@@ -235,14 +235,18 @@ class ConnectionState:
         self._activity: Optional[ActivityPayload] = raw_activity
         self._status: Optional[str] = raw_status
         self._intents: Intents = intents
-        # A set of all application command objects available. Set because duplicates should not exist.
+        # A set of all application command objects available.
+        # Set because duplicates should not exist.
         self._application_commands: Set[BaseApplicationCommand] = set()
-        # A dictionary of all available unique command signatures. Compiled at runtime because needing to iterate
-        # through all application commands would take far more time. If memory is problematic, perhaps this can go?
+        # A dictionary of all available unique command signatures.
+        # Compiled at runtime because needing to iterate through
+        # all application commands would take far more time.
+        # If memory is problematic, perhaps this can go?
         self._application_command_signatures: Dict[
             Tuple[Optional[str], int, Optional[int]], BaseApplicationCommand
         ] = {}
-        # A dictionary of Discord Application Command ID's and the ApplicationCommand object they correspond to.
+        # A dictionary of Discord Application Command ID's
+        # and the ApplicationCommand object they correspond to.
         self._application_command_ids: Dict[int, BaseApplicationCommand] = {}
 
         if not intents.members or member_cache_flags._empty:
@@ -281,7 +285,8 @@ class ConnectionState:
         self._guilds: Dict[int, Guild] = {}
         # TODO: Why aren't the above and stuff below application_commands declared in __init__?
         self._application_commands = set()
-        # Thought about making these two weakref.WeakValueDictionary's, but the bot could theoretically be holding on
+        # Thought about making these two weakref.WeakValueDictionary's,
+        # but the bot could theoretically be holding on
         # to them in a dev-defined, which would desync the bot from itself.
         self._application_command_signatures = {}
         self._application_command_ids = {}
@@ -535,8 +540,11 @@ class ConnectionState:
 
     @property
     def application_commands(self) -> Set[BaseApplicationCommand]:
-        """Gets a copy of the ApplicationCommand object set. If the original is given out and modified, massive desyncs
-        may occur. This should be used internally as well if size-changed-during-iteration is a worry.
+        """Gets a copy of the ApplicationCommand object set.
+
+        If the original is given out and modified, massive desyncs
+        may occur. This should be used internally as well
+        if size-changed-during-iteration is a worry.
         """
         return self._application_commands.copy()
 
@@ -551,8 +559,10 @@ class ConnectionState:
     def get_guild_application_commands(
         self, guild_id: Optional[int] = None, rollout: bool = False
     ) -> List[BaseApplicationCommand]:
-        """Gets all commands that have the given guild ID. If guild_id is None, all guild commands are returned. if
-        rollout is True, guild_ids_to_rollout is used.
+        """Gets all commands that have the given guild ID.
+
+        If guild_id is None, all guild commands are returned. If
+        rollout is ``True``, guild_ids_to_rollout is used.
         """
         ret = []
         for app_cmd in self.application_commands:
@@ -591,12 +601,13 @@ class ConnectionState:
         command: :class:`BaseApplicationCommand`
             The command to add/update the state with.
         overwrite: :class:`bool`
-            If the library will let you add a command that overlaps with an existing command. Default ``False``.
+            If the library will let you add a command that overlaps with
+            an existing command. Default ``False``.
         use_rollout: :class:`bool`
             If the command should be added to the state with its rollout guild IDs.
         pre_remove: :class:`bool`
-            If the command should be removed before adding it. This will clear all signatures from storage, including
-            rollout ones.
+            If the command should be removed before adding it.
+            This will clear all signatures from storage, including rollout ones.
         """
         if pre_remove:
             self.remove_application_command(command)
@@ -616,8 +627,8 @@ class ConnectionState:
             else:
                 self._application_command_signatures[signature] = command
         for command_id in command.command_ids.values():
-            # PyCharm flags found_command as it "might be referenced before assignment", but that can't happen due to it
-            #  being in an AND statement.
+            # PyCharm flags found_command as it "might be referenced before assignment",
+            # but that can't happen due to it being in an AND statement.
             # noinspection PyUnboundLocalVariable
             if (
                 not overwrite
@@ -666,41 +677,47 @@ class ConnectionState:
     ):
         """|coro|
 
-        Syncs all application commands with Discord. Will sync global commands if any commands added are global, and
-        syncs with all guilds that have an application command targeting them.
+        Syncs all application commands with Discord. Will sync global commands
+        if any commands added are global, and syncs with all guilds
+        that have an application command targeting them.
 
-        This may call Discord many times depending on how different guilds you have local commands for, and how many
-        commands Discord needs to be updated or added, which may cause your bot to be rate limited or even Cloudflare
-        banned in VERY extreme cases.
+        This may call Discord many times depending on how different guilds you have
+        local commands for, and how many commands Discord needs to be updated or added,
+        which may cause your bot to be rate limited or even Cloudflare banned
+        in VERY extreme cases.
 
-        This may incur high CPU usage depending on how many commands you have and how complex they are, which may cause
-        your bot to halt while it checks local commands against the existing commands that Discord has.
+        This may incur high CPU usage depending on how many commands you have
+        and how complex they are, which may cause your bot to halt
+        while it checks local commands against the existing commands that Discord has.
 
         For a more targeted version of this method, see :func:`Client.sync_application_commands`
 
         Parameters
         ----------
         data: Optional[Dict[Optional[:class:`int`], List[:class:`dict`]]]
-            Data to use when comparing local application commands to what Discord has. The key should be the
-            :class:`int` guild ID (`None` for global) corresponding to the value list of application command payloads
-            from Discord. Any guild ID's not provided will be fetched if needed. Defaults to ``None``
+            Data to use when comparing local application commands to what Discord has.
+            The key should be the :class:`int` guild ID (`None` for global)
+            corresponding to the value list of application command payloads
+            from Discord. Any guild ID's not provided will be fetched if needed.
+            Defaults to ``None``
         use_rollout: :class:`bool`
             If the rollout guild IDs of commands should be used. Defaults to ``True``
         associate_known: :class:`bool`
-            If local commands that match a command already on Discord should be associated with each other.
-            Defaults to ``True``
+            If local commands that match a command already on Discord
+            should be associated with each other. Defaults to ``True``
         delete_unknown: :class:`bool`
-            If commands on Discord that don't match a local command should be deleted. Defaults to ``True``.
+            If commands on Discord that don't match a local command should be deleted.
+            Defaults to ``True``.
         update_known: :class:`bool`
-            If commands on Discord have a basic match with a local command, but don't fully match, should be updated.
-            Defaults to ``True``
+            If commands on Discord have a basic match with a local command,
+            but don't fully match, should be updated. Defaults to ``True``
         register_new: :class:`bool`
-            If a local command that doesn't have a basic match on Discord should be added to Discord.
-            Defaults to ``True``
+            If a local command that doesn't have a basic match on Discord
+            should be added to Discord. Defaults to ``True``
         ignore_forbidden: :class:`bool`
-            If this command should raise an :class:`errors.Forbidden` exception when the bot encounters a guild where
-            it doesn't have permissions to view application commands.
-            Defaults to ``True``
+            If this command should raise an :class:`errors.Forbidden` exception
+            when the bot encounters a guild where it doesn't have permissions
+            to view application commands. Defaults to ``True``
         """
         _log.debug("Beginning sync of all application commands.")
         self._get_client().add_all_application_commands()
@@ -732,7 +749,8 @@ class ConnectionState:
                         except Forbidden as e:
                             if ignore_forbidden:
                                 _log.warning(
-                                    "nextcord.Client: Forbidden error for %s, is the applications.commands "
+                                    "nextcord.Client: Forbidden error for %s, "
+                                    "is the applications.commands "
                                     "Oauth scope enabled? %s",
                                     guild_id,
                                     e,
@@ -761,28 +779,34 @@ class ConnectionState:
         register_new: bool = True,
     ) -> None:
         """|coro|
-        Syncs the locally added application commands with the Guild corresponding to the given ID, or syncs
+
+        Syncs the locally added application commands with the Guild
+        corresponding to the given ID, or syncs
         global commands if the guild_id is ``None``.
 
         Parameters
         ----------
         data: Optional[List[:class:`dict`]]
-            Data to use when comparing local application commands to what Discord has. Should be a list of application
-            command data from Discord. If left as ``None``, it will be fetched if needed. Defaults to ``None``.
+            Data to use when comparing local application commands to what Discord has.
+            Should be a list of application command data from Discord.
+            If left as ``None``, it will be fetched if needed. Defaults to ``None``.
         guild_id: Optional[:class:`int`]
-            ID of the guild to sync application commands with. If set to ``None``, global commands will be synced instead.
+            ID of the guild to sync application commands with.
+            If set to ``None``, global commands will be synced instead.
             Defaults to ``None``.
         associate_known: :class:`bool`
-            If local commands that match a command already on Discord should be associated with each other.
-            Defaults to ``True``.
+            If local commands that match a command already on Discord
+            should be associated with each other. Defaults to ``True``.
         delete_unknown: :class:`bool`
-            If commands on Discord that don't match a local command should be deleted. Defaults to ``True``.
+            If commands on Discord that don't match a local command
+            should be deleted. Defaults to ``True``.
         update_known: :class:`bool`
-            If commands on Discord have a basic match with a local command, but don't fully match, should be updated.
+            If commands on Discord have a basic match with a local command,
+            but don't fully match, should be updated.
             Defaults to ``True``.
         register_new: :class:`bool`
-            If a local command that doesn't have a basic match on Discord should be added to Discord.
-            Defaults to ``True``.
+            If a local command that doesn't have a basic match on Discord
+            should be added to Discord. Defaults to ``True``.
 
         """
         _log.debug("Syncing commands to %s", guild_id)
@@ -817,26 +841,34 @@ class ConnectionState:
         update_known: bool = True,
     ) -> None:
         """|coro|
-        Associates existing, deletes unknown, and updates modified commands for either global commands or a specific
+
+        Associates existing, deletes unknown,
+        and updates modified commands for either global commands or a specific
         guild. This does a deep check on found commands, which may be expensive CPU-wise.
 
-        Running this for global or the same guild multiple times at once may cause unexpected or unstable behavior.
+        Running this for global or the same guild multiple times at once
+        may cause unexpected or unstable behavior.
 
         Parameters
         ----------
         data: Optional[List[:class:`dict]]
-            Payload from ``HTTPClient.get_guild_commands`` or ``HTTPClient.get_global_commands`` to deploy with. If None,
+            Payload from ``HTTPClient.get_guild_commands`` or
+            ``HTTPClient.get_global_commands`` to deploy with. If ``None``,
             the payload will be retrieved from Discord.
         guild_id: Optional[:class:`int`]
-            Guild ID to deploy application commands to. If ``None``, global commands are deployed to.
+            Guild ID to deploy application commands to. If ``None``,
+            global commands are deployed to.
         associate_known: :class:`bool`
-            If True, commands on Discord that pass a signature check and a deep check will be associated with locally
+            If True, commands on Discord that pass a signature check
+            and a deep check will be associated with locally
             added ApplicationCommand objects.
         delete_unknown: :class:`bool`
-            If ``True``, commands on Discord that fail a signature check will be removed. If ``update_known`` is False,
-            commands that pass the signature check but fail the deep check will also be removed.
+            If ``True``, commands on Discord that fail a signature check will be removed.
+            If ``update_known`` is ``False``, commands that pass the signature check
+            but fail the deep check will also be removed.
         update_known: :class:`bool`
-            If ``True``, commands on Discord that pass a signature check but fail the deep check will be updated.
+            If ``True``, commands on Discord that pass a signature check
+            but fail the deep check will be updated.
         """
         if not associate_known and not delete_unknown and not update_known:
             # If everything is disabled, there is no point in doing anything.
@@ -864,7 +896,7 @@ class ConnectionState:
                 if app_cmd.is_payload_valid(raw_response, guild_id):
                     if associate_known:
                         _log.debug(
-                            "nextcord.ConnectionState: Command with signature %s associated with added command.",
+                            "Command with signature %s associated with added command.",
                             response_signature,
                         )
                         app_cmd.parse_discord_response(self, raw_response)
@@ -872,13 +904,13 @@ class ConnectionState:
 
                 elif update_known:
                     _log.debug(
-                        "nextcord.ConnectionState: Command with signature %s found but failed deep check, updating.",
+                        "Command with signature %s found but failed deep check, updating.",
                         response_signature,
                     )
                     await self.register_application_command(app_cmd, guild_id)
                 elif delete_unknown:
                     _log.debug(
-                        "nextcord.ConnectionState: Command with signature %s found but failed deep check, removing.",
+                        "Command with signature %s found but failed deep check, removing.",
                         response_signature,
                     )
                     # TODO: Re-examine how worthwhile this is.
@@ -886,7 +918,7 @@ class ConnectionState:
 
             elif delete_unknown:
                 _log.debug(
-                    "nextcord.ConnectionState: Command with signature %s found but failed deep check, removing.",
+                    "Command with signature %s found but failed deep check, removing.",
                     response_signature,
                 )
                 if guild_id:
@@ -906,7 +938,8 @@ class ConnectionState:
         update_known: bool = True,
     ) -> None:
         warnings.warn(
-            ".deploy_application_commands is deprecated, use .discover_application_commands instead.",
+            ".deploy_application_commands is deprecated, "
+            "use .discover_application_commands instead.",
             stacklevel=2,
             category=FutureWarning,
         )
@@ -922,7 +955,8 @@ class ConnectionState:
         self, data: Optional[List[ApplicationCommandPayload]] = None, guild_id: Optional[int] = None
     ) -> None:
         warnings.warn(
-            ".associate_application_commands is deprecated, use .deploy_application_commands and set "
+            ".associate_application_commands is deprecated, "
+            "use .deploy_application_commands and set "
             "kwargs in it instead.",
             stacklevel=2,
             category=FutureWarning,
@@ -939,8 +973,8 @@ class ConnectionState:
         self, data: Optional[List[ApplicationCommandPayload]] = None, guild_id: Optional[int] = None
     ) -> None:
         warnings.warn(
-            ".delete_unknown_application_commands is deprecated, use .deploy_application_commands and set "
-            "kwargs in it instead.",
+            ".delete_unknown_application_commands is deprecated, "
+            "use .deploy_application_commands and set kwargs in it instead.",
             stacklevel=2,
             category=FutureWarning,
         )
@@ -973,16 +1007,19 @@ class ConnectionState:
         self, data: Optional[List[ApplicationCommandPayload]] = None, guild_id: Optional[int] = None
     ) -> None:
         """|coro|
-        Registers locally added application commands that don't match a signature that Discord has registered for
-        either global commands or a specific guild.
+
+        Registers locally added application commands that don't match a signature
+        that Discord has registered for either global commands or a specific guild.
 
         Parameters
         ----------
         data: Optional[List[:class:`dict`]]
-            Data to use when comparing local application commands to what Discord has. Should be a list of application
-            command data from Discord. If left as ``None``, it will be fetched if needed. Defaults to ``None``
+            Data to use when comparing local application commands to what Discord has.
+            Should be a list of application command data from Discord.
+            If left as ``None``, it will be fetched if needed. Defaults to ``None``
         guild_id: Optional[:class:`int`]
-            ID of the guild to sync application commands with. If set to ``None``, global commands will be synced instead.
+            ID of the guild to sync application commands with.
+            If set to ``None``, global commands will be synced instead.
             Defaults to ``None``.
         """
         if not data:
@@ -1005,8 +1042,10 @@ class ConnectionState:
             )
             for raw_response in data
         ]
-        # add_application_command can change the size of the dictionary, and apparently .items() doesn't prevent that
-        # "RuntimeError: dictionary changed size during iteration" from happening. So a copy is made for just this.
+        # add_application_command can change the size of the dictionary,
+        # and apparently .items() doesn't prevent that
+        # "RuntimeError: dictionary changed size during iteration" from happening.
+        # So a copy is made for just this.
         for signature, app_cmd in self._application_command_signatures.copy().items():
             if (
                 signature not in data_signatures and signature[2] == guild_id
@@ -1017,14 +1056,17 @@ class ConnectionState:
         self, command: BaseApplicationCommand, guild_id: Optional[int] = None
     ) -> None:
         """|coro|
-        Registers the given application command either for a specific guild or globally and adds the command to the bot.
+
+        Registers the given application command either for a specific guild
+        or globally and adds the command to the bot.
 
         Parameters
         ----------
         command: :class:`BaseApplicationCommand`
             Application command to register.
         guild_id: Optional[:class:`int`]
-            ID of the guild to register the application commands to. If set to ``None``, the commands will be registered
+            ID of the guild to register the application commands to.
+            If set to ``None``, the commands will be registered
             as global commands instead. Defaults to ``None``.
         """
         payload: EditApplicationCommand = command.get_payload(guild_id)  # type: ignore
@@ -1055,15 +1097,16 @@ class ConnectionState:
         self, command: BaseApplicationCommand, guild_id: Optional[int] = None
     ) -> None:
         """|coro|
-        Deletes the given application from Discord for the given guild ID or globally, then removes the signature and
-        command ID from the cache if possible.
+        Deletes the given application from Discord for the given guild ID or globally,
+        then removes the signature and command ID from the cache if possible.
 
         Parameters
         ----------
         command: :class:`ApplicationCommand`
             Application command to delete.
         guild_id: Optional[:class:`int`]
-            Guild ID to delete the application commands from. If ``None``, the command is deleted from global.
+            Guild ID to delete the application commands from.
+            If ``None``, the command is deleted from global.
         """
         if self.application_id is None:
             raise NotImplementedError("Could not get the current application id")
@@ -1107,9 +1150,11 @@ class ConnectionState:
 
     # async def register_bulk_application_commands(self) -> None:
     #     # TODO: Using Bulk upsert seems to delete all commands
-    #     # It might be good to keep this around as a reminder for future work. Bulk upsert seem to delete everything
-    #     # that isn't part of that bulk upsert, for both global and guild commands. While useful, this will
-    #     # update/overwrite existing commands, which may (needs testing) wipe out all permissions associated with those
+    #     # It might be good to keep this around as a reminder for future work.
+    #     # Bulk upsert seem to delete everything
+    #     # that isn't part of that bulk upsert, for both global and guild commands.
+    #     # While useful, this will update/overwrite existing commands,
+    #     # which may (needs testing) wipe out all permissions associated with those
     #     # commands. Look for an opportunity to use bulk upsert.
     #     raise NotImplementedError
 
@@ -1742,7 +1787,12 @@ class ConnectionState:
         for emoji in before_emojis:
             self._emojis.pop(emoji.id, None)
         # guild won't be None here
-        guild.emojis = tuple(map(lambda d: self.store_emoji(guild, d), data["emojis"]))  # type: ignore
+        guild.emojis = tuple(
+            map(
+                lambda d: self.store_emoji(guild, d),  # type: ignore
+                data["emojis"],
+            )
+        )
         self.dispatch("guild_emojis_update", guild, before_emojis, guild.emojis)
 
     def parse_guild_stickers_update(self, data) -> None:
@@ -1758,7 +1808,12 @@ class ConnectionState:
         for emoji in before_stickers:
             self._stickers.pop(emoji.id, None)
         # guild won't be None here
-        guild.stickers = tuple(map(lambda d: self.store_sticker(guild, d), data["stickers"]))  # type: ignore
+        guild.stickers = tuple(
+            map(
+                lambda d: self.store_sticker(guild, d),  # type: ignore
+                data["stickers"],
+            )
+        )
         self.dispatch("guild_stickers_update", guild, before_stickers, guild.stickers)
 
     def _get_create_guild(self, data):
@@ -1935,7 +1990,14 @@ class ConnectionState:
         presences = data.get("presences", [])
 
         # the guild won't be None here
-        members = [Member(guild=guild, data=member, state=self) for member in data.get("members", [])]  # type: ignore
+        members = [
+            Member(
+                guild=guild,  # type: ignore
+                data=member,
+                state=self,
+            )
+            for member in data.get("members", [])
+        ]
         _log.debug("Processed a chunk for %s members in guild ID %s.", len(members), guild_id)
 
         if presences:
@@ -2317,7 +2379,8 @@ class ConnectionState:
             self.dispatch("guild_audit_log_entry_create", entry)
         else:
             _log.debug(
-                "guild_audit_log_entry_create wasn't dispatched because the guild (%r) and/or user (%r) are None!",
+                "guild_audit_log_entry_create wasn't dispatched because the guild "
+                "(%r) and/or user (%r) are None!",
                 guild,
                 user,
             )
@@ -2382,7 +2445,10 @@ class AutoShardedConnectionState(ConnectionState):
                                 current_bucket, timeout=max_concurrency * 70.0
                             )
                         except asyncio.TimeoutError:
-                            fmt = "Shard ID %s failed to wait for chunks from a sub-bucket with length %d"
+                            fmt = (
+                                "Shard ID %s failed to wait for chunks from a sub-bucket "
+                                "with length %d"
+                            )
                             _log.warning(fmt, guild.shard_id, len(current_bucket))
                         finally:
                             current_bucket = []
@@ -2398,7 +2464,7 @@ class AutoShardedConnectionState(ConnectionState):
 
         processed: list[tuple[Guild, Future]]
 
-        def key(g):
+        def key(g: tuple[Guild, Future]) -> int:
             return g[0].shard_id
 
         guilds = sorted(processed, key=key)
