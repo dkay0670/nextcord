@@ -866,7 +866,7 @@ class GuildStickerConverter(IDConverter[nextcord.GuildSticker]):
 
 
 _EVENT_INVITE_RE = re.compile(
-    r"(?:https?\:\/\/)?discord(?:\.gg|(?:app)?\.com\/invite)\/(.+)" "?event=(\d+)"
+    r"(?:https?\:\/\/)?discord(?:\.gg|(?:app)?\.com\/invite)\/(.+)?event=(\d+)"
 )
 
 _EVENT_API_RE = re.compile(

@@ -67,7 +67,7 @@ reportUnnecessaryTypeIgnoreComment = true
 line-length = 100
 
 # https://beta.ruff.rs/docs/rules/
-select = ["E", "F"]
+select = ["E", "F", "W"]
 
 # F403, F405: star imports are not lethal. Pyright can find undefined errors.
 ignore = ["F403", "F405"]
